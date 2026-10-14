@@ -1,0 +1,5 @@
+# Automatisches Handling von Zeilenumbrüchen für alle Textdateien
+* text=auto
+
+# Explizit LF für Shell-Scripte erzwingen
+*.sh text eol=lf
