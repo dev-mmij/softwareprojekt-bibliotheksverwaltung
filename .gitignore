@@ -40,3 +40,7 @@ node_modules/
 vaadin-dev-server-settings.json
 **/vaadin-dev-server-settings.json
 /src/main/dev-bundle/
+
+# local environment
+.env
+*.env
