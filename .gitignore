@@ -44,3 +44,6 @@ vaadin-dev-server-settings.json
 # local environment
 .env
 *.env
+
+# IDE configs
+.vscode/
