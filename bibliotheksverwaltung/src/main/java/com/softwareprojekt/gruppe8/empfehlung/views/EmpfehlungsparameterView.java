@@ -16,7 +16,6 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
-import static com.vaadin.copilot.shaded.io.netty.handler.codec.http.HttpHeaders.setHeader;
 
 /**
  * Admin-Ansicht zum Einstellen der Empfehlungsparameter
