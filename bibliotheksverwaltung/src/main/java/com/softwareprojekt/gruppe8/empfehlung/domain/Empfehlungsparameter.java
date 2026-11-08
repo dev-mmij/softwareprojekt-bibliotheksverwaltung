@@ -3,10 +3,9 @@ package com.softwareprojekt.gruppe8.empfehlung.domain;
 import jakarta.persistence.*;
 
 /**
- * @author Niklas Prell
- *
  * Einstellbarer Wert des Empfehlungsalgorithmus, der von Admins geaendert werden kann, um das Verhalten
  * der Empfehlungsauswahl zu beeinflussen.
+ * @author Niklas Prell
  */
 
 @Entity
@@ -18,7 +17,7 @@ public class Empfehlungsparameter {
 
     //Eindeutiger technischer Name eines Parameters
     @Column(nullable = false, unique = true)
-    private String name;
+    private String kennung;
 
     @Column(nullable = false)
     private double wert;
@@ -28,13 +27,13 @@ public class Empfehlungsparameter {
 
     private String beschreibung;
 
-    //Parameterloser Konstruktur fuer JPA
+    //Parameterloser Konstruktor fuer JPA
     protected Empfehlungsparameter() {
         super();
     }
 
-    public Empfehlungsparameter(String name, double standardwert, String beschreibung){
-        this.name = name;
+    public Empfehlungsparameter(String kennung, double standardwert, String beschreibung){
+        this.kennung = kennung;
         this.wert = standardwert; //neuer Empfehlungsparameter startet mit Standardwert
         this.standardwert = standardwert;
         this.beschreibung = beschreibung;
@@ -43,11 +42,8 @@ public class Empfehlungsparameter {
     public Long getParameterId(){
         return parameterId;
     }
-    public String getName(){
-        return name;
-    }
-    public void setName(String name){
-        this.name = name;
+    public String getKennung(){
+        return kennung;
     }
     public double getWert(){
         return wert;
@@ -64,7 +60,6 @@ public class Empfehlungsparameter {
     public void setBeschreibung(String beschreibung){
         this.beschreibung = beschreibung;
     }
-
     public void aufStandardZuruecksetzen(){
         this.wert = standardwert;
     }
