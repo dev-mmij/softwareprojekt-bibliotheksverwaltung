@@ -1,39 +1,47 @@
 package com.softwareprojekt.gruppe8.empfehlung.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+/**
+ * @author Niklas Prell
+ *
+ * Einstellbarer Wert des Empfehlungsalgorithmus, der von Admins geaendert werden kann, um das Verhalten
+ * der Empfehlungsauswahl zu beeinflussen.
+ */
 
 @Entity
 public class Empfehlungsparameter {
 
-    //Primaerschluessel
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long empfehlungsparameter_id;
+    private Long parameterId;
 
-    //Nichtschluesselattribute
+    //Eindeutiger technischer Name eines Parameters
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(nullable = false)
     private double wert;
+
+    @Column(nullable = false)
     private double standardwert;
+
     private String beschreibung;
 
-    //Parameterloser Konstruktur
-    public Empfehlungsparameter() {
+    //Parameterloser Konstruktur fuer JPA
+    protected Empfehlungsparameter() {
         super();
     }
 
-    //Parametrisierter Konstruktor
-    public Empfehlungsparameter(String name, double wert, double standardwert, String beschreibung){
+    public Empfehlungsparameter(String name, double standardwert, String beschreibung){
         this.name = name;
-        this.wert = wert;
+        this.wert = standardwert; //neuer Empfehlungsparameter startet mit Standardwert
         this.standardwert = standardwert;
+        this.beschreibung = beschreibung;
     }
 
-    //Getter- und Setter-Methoden
-    public Long getEmpfehlungsparameter_id(){
-        return empfehlungsparameter_id;
+    public Long getParameterId(){
+        return parameterId;
     }
     public String getName(){
         return name;
@@ -57,5 +65,7 @@ public class Empfehlungsparameter {
         this.beschreibung = beschreibung;
     }
 
-
+    public void aufStandardZuruecksetzen(){
+        this.wert = standardwert;
+    }
 }
