@@ -1,6 +1,7 @@
 package com.softwareprojekt.gruppe8.empfehlung.views;
 
 import com.softwareprojekt.gruppe8.empfehlung.domain.Empfehlungsparameter;
+import com.softwareprojekt.gruppe8.empfehlung.service.EmpfehlungsparameterService;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H4;
@@ -29,7 +30,12 @@ import static com.vaadin.copilot.shaded.io.netty.handler.codec.http.HttpHeaders.
 
 public class EmpfehlungsparameterView extends VerticalLayout {
 
-    public EmpfehlungsparameterView() {
+    private final EmpfehlungsparameterService  empfehlungsparameterService;
+
+    public EmpfehlungsparameterView(EmpfehlungsparameterService empfehlungsparameterService) {
+
+        this.empfehlungsparameterService = empfehlungsparameterService;
+
         //Ueberschrift
         H2 ueberschrift = new H2("Empfehlungsparameter");
         Paragraph seitenBeschreibung = new Paragraph("Lege fest, wie Readly Interessen gewichtet und neue Bücher empfiehlt.");
@@ -38,6 +44,8 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         Grid<Empfehlungsparameter> empfehlungsparameterGrid = new Grid<>();
         empfehlungsparameterGrid.addComponentColumn(this::parameterMitBeschreibung).setHeader("Parameter & Beschreibung");
         empfehlungsparameterGrid.addComponentColumn(this::werteSlider).setHeader("Wert");
+        empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameters());
+        empfehlungsparameterGrid.setAllRowsVisible(true);
 
 
 
@@ -52,9 +60,11 @@ public class EmpfehlungsparameterView extends VerticalLayout {
      * @return VerticalLayout mit Kennung und Beschreibung eiens Empfehlungsparameters
      */
     private VerticalLayout parameterMitBeschreibung(Empfehlungsparameter empfehlungsparameter) {
-        H4 parameterKennung = new H4("ParameterKennung");
-        Paragraph parameterBeschreibung = new Paragraph("ParameterBeschreibung");
-        return new VerticalLayout(parameterKennung, parameterBeschreibung);
+        H4 parameterKennung = new H4(empfehlungsparameter.getKennung());
+        Paragraph parameterBeschreibung = new Paragraph(empfehlungsparameter.getBeschreibung());
+        VerticalLayout zelle = new VerticalLayout(parameterKennung, parameterBeschreibung);
+        zelle.setSpacing(false);
+        return zelle;
     }
 
     /**
@@ -64,13 +74,13 @@ public class EmpfehlungsparameterView extends VerticalLayout {
      */
     private HorizontalLayout werteSlider(Empfehlungsparameter empfehlungsparameter) {
         DecimalSlider slider = new DecimalSlider(0.0, 10.0);
-        slider.setValue(5.0);
+        slider.setValue(empfehlungsparameter.getWert());
         slider.setMinMaxVisible(true);
         NumberField feld = new NumberField();
         feld.setMin(0.0);
         feld.setMax(10.0);
         feld.setStep(1.0);
-        feld.setValue(5.0);
+        feld.setValue(empfehlungsparameter.getWert());
         return new HorizontalLayout(slider, feld);
     }
 
