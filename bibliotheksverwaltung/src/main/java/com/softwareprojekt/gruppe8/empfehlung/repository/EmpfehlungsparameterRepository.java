@@ -1,8 +1,7 @@
 package com.softwareprojekt.gruppe8.empfehlung.repository;
 
 import com.softwareprojekt.gruppe8.empfehlung.domain.Empfehlungsparameter;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.Optional;
 
@@ -11,8 +10,6 @@ import java.util.Optional;
  * @author Niklas Prell
  */
 
-@Repository
-public interface EmpfehlungsparameterRepository extends CrudRepository<Empfehlungsparameter, Long> {
-    Optional<Empfehlungsparameter> findByParameterId(long parameterId);
+public interface EmpfehlungsparameterRepository extends ListCrudRepository<Empfehlungsparameter, Long> {
     Optional<Empfehlungsparameter> findByKennung(String kennung);
 }
