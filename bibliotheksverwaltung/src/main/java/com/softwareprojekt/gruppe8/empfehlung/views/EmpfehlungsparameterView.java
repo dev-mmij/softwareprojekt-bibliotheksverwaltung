@@ -1,12 +1,21 @@
 package com.softwareprojekt.gruppe8.empfehlung.views;
 
+import com.softwareprojekt.gruppe8.empfehlung.domain.Empfehlungsparameter;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.slider.DecimalSlider;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
+
+import static com.vaadin.copilot.shaded.io.netty.handler.codec.http.HttpHeaders.setHeader;
 
 /**
  * Admin-Ansicht zum Einstellen der Empfehlungsparameter
@@ -19,8 +28,52 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 @RolesAllowed("ADMIN")
 
 public class EmpfehlungsparameterView extends VerticalLayout {
+
     public EmpfehlungsparameterView() {
+        //Ueberschrift
         H2 ueberschrift = new H2("Empfehlungsparameter");
-        add(ueberschrift);
+        Paragraph seitenBeschreibung = new Paragraph("Lege fest, wie Readly Interessen gewichtet und neue Bücher empfiehlt.");
+
+        //Tabelle der Empfehlungsparameter
+        Grid<Empfehlungsparameter> empfehlungsparameterGrid = new Grid<>();
+        empfehlungsparameterGrid.addComponentColumn(this::parameterMitBeschreibung).setHeader("Parameter & Beschreibung");
+        empfehlungsparameterGrid.addComponentColumn(this::werteSlider).setHeader("Wert");
+
+
+
+        //Hinzufuegen aller Elemente
+        add(ueberschrift,  seitenBeschreibung, empfehlungsparameterGrid);
     }
+
+    /**
+     * Liefert einen VerticalLayout mit der Kennung eines Empfehlungsparameters mit der Beschreibung unten
+     * drunter.
+     * @param empfehlungsparameter
+     * @return VerticalLayout mit Kennung und Beschreibung eiens Empfehlungsparameters
+     */
+    private VerticalLayout parameterMitBeschreibung(Empfehlungsparameter empfehlungsparameter) {
+        H4 parameterKennung = new H4("ParameterKennung");
+        Paragraph parameterBeschreibung = new Paragraph("ParameterBeschreibung");
+        return new VerticalLayout(parameterKennung, parameterBeschreibung);
+    }
+
+    /**
+     * Liefert ein HorizontalLayout mit den Werten eines Parameters als Slider und Feld.
+     * @param empfehlungsparameter
+     * @return HorizontalLayout mit DecimalSlider und NumberField zum Einstellen eines Empfehlungsparamters.
+     */
+    private HorizontalLayout werteSlider(Empfehlungsparameter empfehlungsparameter) {
+        DecimalSlider slider = new DecimalSlider(0.0, 10.0);
+        slider.setValue(5.0);
+        slider.setMinMaxVisible(true);
+        NumberField feld = new NumberField();
+        feld.setMin(0.0);
+        feld.setMax(10.0);
+        feld.setStep(1.0);
+        feld.setValue(5.0);
+        return new HorizontalLayout(slider, feld);
+    }
+
+
+
 }
