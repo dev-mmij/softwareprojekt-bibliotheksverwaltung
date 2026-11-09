@@ -3,6 +3,7 @@ package com.softwareprojekt.gruppe8.empfehlung.views;
 import com.softwareprojekt.gruppe8.empfehlung.domain.Empfehlungsparameter;
 import com.softwareprojekt.gruppe8.empfehlung.domain.EmpfehlungsparameterDefinition;
 import com.softwareprojekt.gruppe8.empfehlung.service.EmpfehlungsparameterService;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H4;
@@ -16,6 +17,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -31,6 +35,8 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 public class EmpfehlungsparameterView extends VerticalLayout {
 
     private final EmpfehlungsparameterService  empfehlungsparameterService;
+    private Grid<Empfehlungsparameter> empfehlungsparameterGrid;
+    private Map<String, DecimalSlider> parameterFelder = new HashMap<>();
 
     public EmpfehlungsparameterView(EmpfehlungsparameterService empfehlungsparameterService) {
 
@@ -41,16 +47,23 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         Paragraph seitenBeschreibung = new Paragraph("Lege fest, wie Readly Interessen gewichtet und neue Bücher empfiehlt.");
 
         //Tabelle der Empfehlungsparameter
-        Grid<Empfehlungsparameter> empfehlungsparameterGrid = new Grid<>();
+        empfehlungsparameterGrid = new Grid<>();
         empfehlungsparameterGrid.addComponentColumn(this::parameterMitBeschreibung).setHeader("Parameter & Beschreibung");
         empfehlungsparameterGrid.addComponentColumn(this::werteSlider).setHeader("Wert");
         empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameters());
         empfehlungsparameterGrid.setAllRowsVisible(true);
 
+        //Button zum Speichern und Zuruecksetzen
+        Button zuruecksetzButton = new Button("Zurücksetzen");
+        zuruecksetzButton.addClickListener(e -> {zuruecksetzen();});
+        Button speicherButton = new Button("Speichern");
+        speicherButton.addClickListener(e -> {speichern();});
+
+        HorizontalLayout buttonLeiste = new HorizontalLayout(zuruecksetzButton, speicherButton);
 
 
         //Hinzufuegen aller Elemente
-        add(ueberschrift,  seitenBeschreibung, empfehlungsparameterGrid);
+        add(ueberschrift,  seitenBeschreibung, empfehlungsparameterGrid, buttonLeiste);
     }
 
     /**
@@ -93,10 +106,21 @@ public class EmpfehlungsparameterView extends VerticalLayout {
             else
                 slider.setValue(e.getValue());
             });
-
+        parameterFelder.put(empfehlungsparameter.getKennung(), slider);
         return new HorizontalLayout(slider, feld);
     }
 
+    private void speichern(){
+        Map<String, Double> neueParameterWerte = new HashMap<>();
+        parameterFelder.forEach((kennung,slider) -> {
+            neueParameterWerte.put(kennung,slider.getValue());
+        });
+        empfehlungsparameterService.speichern(neueParameterWerte);
+    }
 
-
+    private void zuruecksetzen(){
+        empfehlungsparameterService.zuruecksetzen();
+        parameterFelder.clear();
+        empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameters());
+    }
 }
