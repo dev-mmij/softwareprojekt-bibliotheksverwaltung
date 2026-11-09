@@ -33,5 +33,10 @@ public enum EmpfehlungsparameterDefinition {
     public boolean istGanzzahl() {
         return istGanzzahl;
     }
+    public boolean istGueltig(double wert){
+        boolean istPassenderZahlentyp = !istGanzzahl || (int)wert == wert;
+        boolean istPassenderBereich = wert >= minimum && wert <= maximum;
+        return  istPassenderZahlentyp && istPassenderBereich;
+    }
 
 }
