@@ -35,8 +35,8 @@ import java.util.Map;
 public class EmpfehlungsparameterView extends VerticalLayout {
 
     private final EmpfehlungsparameterService  empfehlungsparameterService;
-    private Grid<Empfehlungsparameter> empfehlungsparameterGrid;
-    private Map<String, DecimalSlider> parameterFelder = new HashMap<>();
+    private final Grid<Empfehlungsparameter> empfehlungsparameterGrid;
+    private final Map<String, DecimalSlider> parameterFelder = new HashMap<>();
 
     public EmpfehlungsparameterView(EmpfehlungsparameterService empfehlungsparameterService) {
 
@@ -55,9 +55,9 @@ public class EmpfehlungsparameterView extends VerticalLayout {
 
         //Button zum Speichern und Zuruecksetzen
         Button zuruecksetzButton = new Button("Zurücksetzen");
-        zuruecksetzButton.addClickListener(e -> {zuruecksetzen();});
+        zuruecksetzButton.addClickListener(e -> zuruecksetzen());
         Button speicherButton = new Button("Speichern");
-        speicherButton.addClickListener(e -> {speichern();});
+        speicherButton.addClickListener(e -> speichern());
 
         HorizontalLayout buttonLeiste = new HorizontalLayout(zuruecksetzButton, speicherButton);
 
@@ -99,7 +99,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         feld.setStep(parameterDefinition.istGanzzahl() ? 1 : 0.05);
         feld.setValue(empfehlungsparameter.getWert());
         //Synchronisieren der beiden Elemente
-        slider.addValueChangeListener(e -> {feld.setValue(e.getValue());});
+        slider.addValueChangeListener(e -> feld.setValue(e.getValue()));
         feld.addValueChangeListener(e -> {
             if(e.getValue() == null)
                 feld.setValue(parameterDefinition.getMinimum());
@@ -112,9 +112,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
 
     private void speichern(){
         Map<String, Double> neueParameterWerte = new HashMap<>();
-        parameterFelder.forEach((kennung,slider) -> {
-            neueParameterWerte.put(kennung,slider.getValue());
-        });
+        parameterFelder.forEach((kennung,slider) -> neueParameterWerte.put(kennung,slider.getValue()));
         empfehlungsparameterService.speichern(neueParameterWerte);
     }
 
