@@ -16,12 +16,12 @@ public enum EmpfehlungsparameterDefinition {
 
     private final double minimum;
     private final double maximum;
-    private final boolean isGanzzahl;
+    private final boolean istGanzzahl;
 
-    EmpfehlungsparameterDefinition(double minimum, double maximum, boolean isGanzzahl){
+    EmpfehlungsparameterDefinition(double minimum, double maximum, boolean istGanzzahl){
         this.minimum = minimum;
         this.maximum = maximum;
-        this.isGanzzahl = isGanzzahl;
+        this.istGanzzahl = istGanzzahl;
     }
 
     public double getMinimum() {
@@ -30,8 +30,8 @@ public enum EmpfehlungsparameterDefinition {
     public double getMaximum() {
         return maximum;
     }
-    public boolean isGanzzahl() {
-        return isGanzzahl;
+    public boolean istGanzzahl() {
+        return istGanzzahl;
     }
 
 }
