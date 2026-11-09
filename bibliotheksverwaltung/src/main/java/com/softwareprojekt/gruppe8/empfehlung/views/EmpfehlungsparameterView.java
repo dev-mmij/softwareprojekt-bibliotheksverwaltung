@@ -1,6 +1,7 @@
 package com.softwareprojekt.gruppe8.empfehlung.views;
 
 import com.softwareprojekt.gruppe8.empfehlung.domain.Empfehlungsparameter;
+import com.softwareprojekt.gruppe8.empfehlung.domain.EmpfehlungsparameterDefinition;
 import com.softwareprojekt.gruppe8.empfehlung.service.EmpfehlungsparameterService;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
@@ -72,14 +73,27 @@ public class EmpfehlungsparameterView extends VerticalLayout {
      * @return HorizontalLayout mit DecimalSlider und NumberField zum Einstellen eines Empfehlungsparamters.
      */
     private HorizontalLayout werteSlider(Empfehlungsparameter empfehlungsparameter) {
-        DecimalSlider slider = new DecimalSlider(0.0, 10.0);
+        EmpfehlungsparameterDefinition parameterDefinition = EmpfehlungsparameterDefinition.valueOf(empfehlungsparameter.getKennung());
+        //Slider
+        DecimalSlider slider = new DecimalSlider(parameterDefinition.getMinimum(), parameterDefinition.getMaximum());
+        slider.setStep(parameterDefinition.istGanzzahl() ? 1 : 0.05);
         slider.setValue(empfehlungsparameter.getWert());
         slider.setMinMaxVisible(true);
+        //Nummernfeld
         NumberField feld = new NumberField();
-        feld.setMin(0.0);
-        feld.setMax(10.0);
-        feld.setStep(1.0);
+        feld.setMin(parameterDefinition.getMinimum());
+        feld.setMax(parameterDefinition.getMaximum());
+        feld.setStep(parameterDefinition.istGanzzahl() ? 1 : 0.05);
         feld.setValue(empfehlungsparameter.getWert());
+        //Synchronisieren der beiden Elemente
+        slider.addValueChangeListener(e -> {feld.setValue(e.getValue());});
+        feld.addValueChangeListener(e -> {
+            if(e.getValue() == null)
+                feld.setValue(parameterDefinition.getMinimum());
+            else
+                slider.setValue(e.getValue());
+            });
+
         return new HorizontalLayout(slider, feld);
     }
 
