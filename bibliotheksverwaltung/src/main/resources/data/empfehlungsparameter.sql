@@ -7,7 +7,7 @@ INSERT INTO empfehlungsparameter (kennung, wert, standardwert, beschreibung) VAL
     ('BONUS_GEFOLGTER_AUTOR', 0.25, 0.25, 'Bonus für Autoren, denen der Nutzer folgt'),
     ('GEWICHT_MIN', -1.0, -1.0, 'Untere Grenze eines Interessenwerts'),
     ('GEWICHT_MAX', 1.0, 1.0, 'Obere Grenze eines Interessenwerts'),
-    ('ANTEIL AUTOR', 0.3, 0.3, 'Wie stark die Autoren in die Empfehlungen zählen'),
+    ('ANTEIL_AUTOR', 0.3, 0.3, 'Wie stark die Autoren in die Empfehlungen zählen'),
     ('ZUFALL_MAX', 0.2, 0.2, 'Größter Zufallsanteil im Punktewert'),
     ('ENTDECKUNGSPLAETZE', 2, 2, 'Entdeckungskarten pro 10 Karten'),
     ('MINDESTABSTAND_WIEDERHOLUNG', 20, 20, 'Anzahl Karten, nach denen ein Buch frühstens wiederkommt');
