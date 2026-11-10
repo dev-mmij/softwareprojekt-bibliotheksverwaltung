@@ -90,7 +90,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         EmpfehlungsparameterDefinition parameterDefinition = EmpfehlungsparameterDefinition.valueOf(empfehlungsparameter.getKennung());
         //Slider
         DecimalSlider slider = new DecimalSlider(parameterDefinition.getMinimum(), parameterDefinition.getMaximum());
-        slider.setStep(parameterDefinition.istGanzzahl() ? 1 : 0.05);
+        slider.setStep(parameterDefinition.getSchrittweite());
         slider.setValue(empfehlungsparameter.getWert());
         slider.setMinMaxVisible(true);
 
@@ -98,7 +98,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         NumberField feld = new NumberField();
         feld.setMin(parameterDefinition.getMinimum());
         feld.setMax(parameterDefinition.getMaximum());
-        feld.setStep(parameterDefinition.istGanzzahl() ? 1 : 0.05);
+        feld.setStep(parameterDefinition.getSchrittweite());
         feld.setValue(empfehlungsparameter.getWert());
 
         //Synchronisieren der beiden Elemente
