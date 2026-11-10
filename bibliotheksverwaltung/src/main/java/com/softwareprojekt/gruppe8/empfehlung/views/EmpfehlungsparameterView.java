@@ -8,6 +8,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.slider.DecimalSlider;
@@ -113,7 +114,12 @@ public class EmpfehlungsparameterView extends VerticalLayout {
     private void speichern(){
         Map<String, Double> neueParameterWerte = new HashMap<>();
         parameterFelder.forEach((kennung,slider) -> neueParameterWerte.put(kennung,slider.getValue()));
-        empfehlungsparameterService.speichern(neueParameterWerte);
+        try{
+            empfehlungsparameterService.speichern(neueParameterWerte);
+        }catch(IllegalArgumentException e){
+            Notification.show(e.getMessage());
+        }
+
     }
 
     private void zuruecksetzen(){
