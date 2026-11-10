@@ -50,7 +50,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         //Tabelle der Empfehlungsparameter
         empfehlungsparameterGrid = new Grid<>();
         empfehlungsparameterGrid.addComponentColumn(this::parameterMitBeschreibung).setHeader("Parameter & Beschreibung");
-        empfehlungsparameterGrid.addComponentColumn(this::werteSlider).setHeader("Wert");
+        empfehlungsparameterGrid.addComponentColumn(this::wertEingabe).setHeader("Wert");
         empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameters());
         empfehlungsparameterGrid.setAllRowsVisible(true);
 
@@ -86,19 +86,21 @@ public class EmpfehlungsparameterView extends VerticalLayout {
      * @param empfehlungsparameter
      * @return HorizontalLayout mit DecimalSlider und NumberField zum Einstellen eines Empfehlungsparamters.
      */
-    private HorizontalLayout werteSlider(Empfehlungsparameter empfehlungsparameter) {
+    private HorizontalLayout wertEingabe(Empfehlungsparameter empfehlungsparameter) {
         EmpfehlungsparameterDefinition parameterDefinition = EmpfehlungsparameterDefinition.valueOf(empfehlungsparameter.getKennung());
         //Slider
         DecimalSlider slider = new DecimalSlider(parameterDefinition.getMinimum(), parameterDefinition.getMaximum());
         slider.setStep(parameterDefinition.istGanzzahl() ? 1 : 0.05);
         slider.setValue(empfehlungsparameter.getWert());
         slider.setMinMaxVisible(true);
+
         //Nummernfeld
         NumberField feld = new NumberField();
         feld.setMin(parameterDefinition.getMinimum());
         feld.setMax(parameterDefinition.getMaximum());
         feld.setStep(parameterDefinition.istGanzzahl() ? 1 : 0.05);
         feld.setValue(empfehlungsparameter.getWert());
+
         //Synchronisieren der beiden Elemente
         slider.addValueChangeListener(e -> feld.setValue(e.getValue()));
         feld.addValueChangeListener(e -> {
