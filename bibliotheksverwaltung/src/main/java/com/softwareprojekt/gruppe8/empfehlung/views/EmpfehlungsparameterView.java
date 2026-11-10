@@ -104,11 +104,14 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         //Synchronisieren der beiden Elemente
         slider.addValueChangeListener(e -> feld.setValue(e.getValue()));
         feld.addValueChangeListener(e -> {
-            if(e.getValue() == null)
+            if(e.getValue() == null) {
                 feld.setValue(parameterDefinition.getMinimum());
-            else
-                slider.setValue(e.getValue());
-            });
+            } else{
+                double korrigierterWert = parameterDefinition.naechsterGueltigerWert(e.getValue());
+                feld.setValue(korrigierterWert);
+                slider.setValue(korrigierterWert);
+            }
+        });
         parameterFelder.put(empfehlungsparameter.getKennung(), slider);
         return new HorizontalLayout(slider, feld);
     }
@@ -123,7 +126,6 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         }
 
     }
-
     private void zuruecksetzen(){
         empfehlungsparameterService.zuruecksetzen();
         parameterFelder.clear();
