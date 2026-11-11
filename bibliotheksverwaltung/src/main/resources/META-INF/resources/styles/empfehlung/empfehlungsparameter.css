@@ -48,9 +48,10 @@
 
 .empfehlungsparameter-view vaadin-grid {
     --lumo-base-color: var(--readly-flaeche);
-    border: 1px solid var(--readly-rahmen);
+    border: none;
     border-radius: 12px;
     overflow: hidden;
+    scrollbar-color: var(--readly-primaer) transparent;
 }
 
 .empfehlungsparameter-view vaadin-grid::part(header-cell) {
@@ -90,10 +91,18 @@
 }
 
 .empfehlungsparameter-view .wert-eingabe vaadin-number-field {
-    width: 6rem;
+    width: 4.5rem;
 }
 
 .empfehlungsparameter-view .button-leiste {
     width: 100%;
     justify-content: flex-end;
+}
+.empfehlungsparameter-view .wert-eingabe vaadin-number-field::part(input-field) {
+    background: var(--readly-flaeche);
+    border: 1px solid var(--readly-rahmen);
+}
+
+.empfehlungsparameter-view .wert-eingabe vaadin-number-field > input {
+    text-align: center;
 }

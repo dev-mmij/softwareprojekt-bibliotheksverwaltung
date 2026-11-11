@@ -4,7 +4,10 @@ import com.softwareprojekt.gruppe8.empfehlung.domain.Empfehlungsparameter;
 import com.softwareprojekt.gruppe8.empfehlung.domain.EmpfehlungsparameterDefinition;
 import com.softwareprojekt.gruppe8.empfehlung.service.EmpfehlungsparameterService;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -32,6 +35,7 @@ import java.util.Map;
 @Route("admin/empfehlungsparameter")
 @Menu(order = 100, icon= LineAwesomeIconUrl.COG_SOLID)
 @RolesAllowed("ADMIN")
+@StyleSheet("styles/empfehlung/empfehlungsparameter.css")
 
 public class EmpfehlungsparameterView extends VerticalLayout {
 
@@ -43,31 +47,38 @@ public class EmpfehlungsparameterView extends VerticalLayout {
     public EmpfehlungsparameterView(EmpfehlungsparameterService empfehlungsparameterService) {
 
         this.empfehlungsparameterService = empfehlungsparameterService;
+        addClassName("empfehlungsparameter-view");
+        setSizeFull();
 
         //Ueberschrift
         H2 ueberschrift = new H2("Empfehlungsparameter");
+        ueberschrift.addClassName("seiten-titel");
         Paragraph seitenBeschreibung = new Paragraph("Lege fest, wie Readly Interessen gewichtet und neue Bücher empfiehlt.");
+        seitenBeschreibung.addClassName("seiten-beschreibung");
 
         //Erfolgsbalken
         Icon erfolgsIcon = new Icon(VaadinIcon.CHECK);
         Span erfolgsText = new Span(" Speichern der Daten erfolgreich!");
         erfolgsBalken = new Div(erfolgsIcon, erfolgsText);
         erfolgsBalken.setVisible(false);
+        erfolgsBalken.addClassName("erfolgsmeldung");
 
         //Tabelle der Empfehlungsparameter
         empfehlungsparameterGrid = new Grid<>();
-        empfehlungsparameterGrid.addComponentColumn(this::parameterMitBeschreibung).setHeader("Parameter & Beschreibung");
-        empfehlungsparameterGrid.addComponentColumn(this::wertEingabe).setHeader("Wert");
+        empfehlungsparameterGrid.addComponentColumn(this::parameterMitBeschreibung).setHeader("Parameter & Beschreibung").setFlexGrow(1);
+        empfehlungsparameterGrid.addComponentColumn(this::wertEingabe).setHeader("Wert").setWidth("420px").setFlexGrow(0);
         empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameter());
-        empfehlungsparameterGrid.setAllRowsVisible(true);
+        empfehlungsparameterGrid.addClassName("empfehlungsparameter-grid");
+        setFlexGrow(1.0, empfehlungsparameterGrid);
 
         //Button zum Speichern und Zuruecksetzen
         Button zuruecksetzButton = new Button("Zurücksetzen");
         zuruecksetzButton.addClickListener(e -> zuruecksetzen());
         Button speicherButton = new Button("Speichern");
         speicherButton.addClickListener(e -> speichern());
-
+        speicherButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         HorizontalLayout buttonLeiste = new HorizontalLayout(zuruecksetzButton, speicherButton);
+        buttonLeiste.addClassName("button-leiste");
 
 
         //Hinzufuegen aller Elemente
@@ -82,9 +93,12 @@ public class EmpfehlungsparameterView extends VerticalLayout {
      */
     private VerticalLayout parameterMitBeschreibung(Empfehlungsparameter empfehlungsparameter) {
         H4 parameterKennung = new H4(empfehlungsparameter.getDefinition().name());
+        parameterKennung.addClassName("parameter-kennung");
         Paragraph parameterBeschreibung = new Paragraph(empfehlungsparameter.getBeschreibung());
+        parameterBeschreibung.addClassName("parameter-beschreibung");
         VerticalLayout zelle = new VerticalLayout(parameterKennung, parameterBeschreibung);
         zelle.setSpacing(false);
+        zelle.addClassName("parameter-zelle");
         return zelle;
     }
 
@@ -100,6 +114,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         slider.setStep(parameterDefinition.getSchrittweite());
         slider.setValue(empfehlungsparameter.getWert());
         slider.setMinMaxVisible(true);
+        slider.addClassName("wert-slider");
 
         //Nummernfeld
         NumberField feld = new NumberField();
@@ -107,6 +122,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         feld.setMax(parameterDefinition.getMaximum());
         feld.setStep(parameterDefinition.getSchrittweite());
         feld.setValue(empfehlungsparameter.getWert());
+        feld.addClassName("parameter-feld");
 
         //Synchronisieren der beiden Elemente
         slider.addValueChangeListener(e -> {
@@ -124,7 +140,9 @@ public class EmpfehlungsparameterView extends VerticalLayout {
             erfolgsBalken.setVisible(false);
         });
         empfehlungsparameterFelder.put(empfehlungsparameter.getDefinition(), slider);
-        return new HorizontalLayout(slider, feld);
+        HorizontalLayout wertEingabe = new HorizontalLayout(slider,feld);
+        wertEingabe.addClassName("wert-eingabe");
+        return wertEingabe;
     }
 
     private void speichern(){
