@@ -34,6 +34,7 @@ public class Empfehlungsparameter {
     }
 
     public Empfehlungsparameter(EmpfehlungsparameterDefinition definition, double standardwert, String beschreibung){
+        definition.pruefe(standardwert);
         this.definition = definition;
         this.wert = standardwert; //neuer Empfehlungsparameter startet mit Standardwert
         this.standardwert = standardwert;
@@ -50,6 +51,7 @@ public class Empfehlungsparameter {
         return wert;
     }
     public void setWert(double wert){
+        definition.pruefe(wert);
         this.wert = wert;
     }
     public double getStandardwert(){
@@ -62,6 +64,6 @@ public class Empfehlungsparameter {
         this.beschreibung = beschreibung;
     }
     public void aufStandardZuruecksetzen(){
-        this.wert = standardwert;
+        setWert(standardwert);
     }
 }

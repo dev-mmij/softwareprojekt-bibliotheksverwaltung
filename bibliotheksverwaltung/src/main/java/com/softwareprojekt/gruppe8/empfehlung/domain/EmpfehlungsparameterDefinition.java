@@ -33,12 +33,18 @@ public enum EmpfehlungsparameterDefinition {
     public double getSchrittweite() {
         return schrittweite;
     }
-    public boolean istGueltig(double wert){
-        return naechsterGueltigerWert(wert) == wert;
-    }
     public double naechsterGueltigerWert(double wert){
         double gerundet = Math.round(wert/schrittweite) / (1/schrittweite);
         return Math.max(minimum, Math.min(maximum, gerundet));
+    }
+    public boolean istGueltig(double wert){
+        return naechsterGueltigerWert(wert) == wert;
+    }
+    public void pruefe(double wert){
+        if (!istGueltig(wert)){
+            throw new IllegalArgumentException("Ungültiger Wert " + wert + " für " + name()
+                    + ". Der Wert muss zwischen " + minimum + " und " + maximum + " liegen.");
+        }
     }
 
 }

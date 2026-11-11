@@ -28,12 +28,6 @@ public class EmpfehlungsparameterService {
 
     @Transactional
     public void speichern(Map<EmpfehlungsparameterDefinition, Double> parameterWerte){
-        parameterWerte.forEach((definition, wert) -> {
-            if(!definition.istGueltig(wert)){
-                throw new IllegalArgumentException(definition + " muss zwischen " + definition.getMinimum()
-                + " und " + definition.getMaximum() + " liegen.");
-        }});
-
         parameterWerte.forEach((definition, wert) -> empfehlungsparameterRepository.findByDefinition(definition)
                 .orElseThrow().setWert(wert));
     }
