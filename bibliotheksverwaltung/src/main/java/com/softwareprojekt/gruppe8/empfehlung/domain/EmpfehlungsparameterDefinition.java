@@ -34,9 +34,7 @@ public enum EmpfehlungsparameterDefinition {
         return schrittweite;
     }
     public boolean istGueltig(double wert){
-        boolean passtZurSchrittweite = wert % schrittweite == 0;
-        boolean istPassenderBereich = wert >= minimum && wert <= maximum;
-        return  passtZurSchrittweite && istPassenderBereich;
+        return naechsterGueltigerWert(wert) == wert;
     }
     public double naechsterGueltigerWert(double wert){
         double gerundet = Math.round(wert/schrittweite) / (1/schrittweite);
