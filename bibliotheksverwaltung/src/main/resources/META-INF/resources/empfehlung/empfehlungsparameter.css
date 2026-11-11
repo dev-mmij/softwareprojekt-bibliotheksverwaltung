@@ -1,0 +1,99 @@
+
+.empfehlungsparameter-view {
+    --readly-primaer: #7A2E3A;
+    --readly-akzent: #C8963E;
+    --readly-hintergrund: #F7F1E8;
+    --readly-flaeche: #FFFDF8;
+    --readly-text: #2B2420;
+    --readly-text-sekundaer: #6E625A;
+    --readly-rahmen: #E3D8C9;
+
+    --lumo-primary-color: var(--readly-primaer);
+    --lumo-primary-text-color: var(--readly-primaer);
+    --lumo-primary-color-50pct: rgba(122, 46, 58, 0.5);
+    --lumo-primary-color-10pct: rgba(122, 46, 58, 0.1);
+    --lumo-body-text-color: var(--readly-text);
+    --lumo-header-text-color: var(--readly-text);
+    --lumo-secondary-text-color: var(--readly-text-sekundaer);
+
+    background: var(--readly-hintergrund);
+    min-height: 100%;
+    box-sizing: border-box;
+    padding: var(--lumo-space-l) var(--lumo-space-xl);
+    gap: var(--lumo-space-m);
+}
+
+.empfehlungsparameter-view .seiten-titel {
+    margin: 0;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.empfehlungsparameter-view .seiten-beschreibung {
+    margin: 0;
+    color: var(--readly-text-sekundaer);
+}
+
+.empfehlungsparameter-view .erfolgsmeldung {
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--lumo-space-s) var(--lumo-space-m);
+    border-radius: 8px;
+    background: var(--lumo-success-color-10pct);
+    color: var(--lumo-success-text-color);
+    font-size: var(--lumo-font-size-s);
+    font-weight: 500;
+}
+
+.empfehlungsparameter-view vaadin-grid {
+    --lumo-base-color: var(--readly-flaeche);
+    border: 1px solid var(--readly-rahmen);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.empfehlungsparameter-view vaadin-grid::part(header-cell) {
+    font-size: var(--lumo-font-size-s);
+    font-weight: 600;
+    color: var(--readly-text-sekundaer);
+}
+
+
+.empfehlungsparameter-view .parameter-zelle {
+    padding: 0;
+    gap: 2px;
+}
+
+.empfehlungsparameter-view .parameter-kennung {
+    margin: 0;
+    font-family: inherit;
+    font-size: var(--lumo-font-size-s);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.empfehlungsparameter-view .parameter-beschreibung {
+    margin: 0;
+    font-size: var(--lumo-font-size-s);
+    color: var(--readly-text-sekundaer);
+}
+
+.empfehlungsparameter-view .wert-eingabe {
+    width: 100%;
+    align-items: center;
+    gap: var(--lumo-space-m);
+}
+
+.empfehlungsparameter-view .wert-slider {
+    flex: 1;
+}
+
+.empfehlungsparameter-view .wert-eingabe vaadin-number-field {
+    width: 6rem;
+}
+
+.empfehlungsparameter-view .button-leiste {
+    width: 100%;
+    justify-content: flex-end;
+}
