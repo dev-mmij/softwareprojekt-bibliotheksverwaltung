@@ -16,8 +16,9 @@ public class Empfehlungsparameter {
     private Long parameterId;
 
     //Eindeutiger technischer Name eines Parameters
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private String kennung;
+    private EmpfehlungsparameterDefinition kennung;
 
     @Column(nullable = false)
     private double wert;
@@ -32,7 +33,7 @@ public class Empfehlungsparameter {
         super();
     }
 
-    public Empfehlungsparameter(String kennung, double standardwert, String beschreibung){
+    public Empfehlungsparameter(EmpfehlungsparameterDefinition kennung, double standardwert, String beschreibung){
         this.kennung = kennung;
         this.wert = standardwert; //neuer Empfehlungsparameter startet mit Standardwert
         this.standardwert = standardwert;
@@ -42,7 +43,7 @@ public class Empfehlungsparameter {
     public Long getParameterId(){
         return parameterId;
     }
-    public String getKennung(){
+    public EmpfehlungsparameterDefinition getKennung(){
         return kennung;
     }
     public double getWert(){
