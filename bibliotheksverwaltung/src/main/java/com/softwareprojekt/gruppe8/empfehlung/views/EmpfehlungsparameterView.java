@@ -5,9 +5,9 @@ import com.softwareprojekt.gruppe8.empfehlung.domain.EmpfehlungsparameterDefinit
 import com.softwareprojekt.gruppe8.empfehlung.service.EmpfehlungsparameterService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -38,6 +38,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
     private final EmpfehlungsparameterService  empfehlungsparameterService;
     private final Grid<Empfehlungsparameter> empfehlungsparameterGrid;
     private final Map<EmpfehlungsparameterDefinition, DecimalSlider> empfehlungsparameterFelder = new HashMap<>();
+    private final Div erfolgsBalken;
 
     public EmpfehlungsparameterView(EmpfehlungsparameterService empfehlungsparameterService) {
 
@@ -46,6 +47,12 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         //Ueberschrift
         H2 ueberschrift = new H2("Empfehlungsparameter");
         Paragraph seitenBeschreibung = new Paragraph("Lege fest, wie Readly Interessen gewichtet und neue Bücher empfiehlt.");
+
+        //Erfolgsbalken
+        Icon erfolgsIcon = new Icon(VaadinIcon.CHECK);
+        Span erfolgsText = new Span(" Speichern der Daten erfolgreich!");
+        erfolgsBalken = new Div(erfolgsIcon, erfolgsText);
+        erfolgsBalken.setVisible(false);
 
         //Tabelle der Empfehlungsparameter
         empfehlungsparameterGrid = new Grid<>();
@@ -64,7 +71,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
 
 
         //Hinzufuegen aller Elemente
-        add(ueberschrift,  seitenBeschreibung, empfehlungsparameterGrid, buttonLeiste);
+        add(ueberschrift,  seitenBeschreibung, erfolgsBalken, empfehlungsparameterGrid, buttonLeiste);
     }
 
     /**
@@ -102,7 +109,10 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         feld.setValue(empfehlungsparameter.getWert());
 
         //Synchronisieren der beiden Elemente
-        slider.addValueChangeListener(e -> feld.setValue(e.getValue()));
+        slider.addValueChangeListener(e -> {
+            feld.setValue(e.getValue());
+            erfolgsBalken.setVisible(false);
+        });
         feld.addValueChangeListener(e -> {
             if(e.getValue() == null) {
                 feld.setValue(parameterDefinition.getMinimum());
@@ -111,6 +121,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
                 feld.setValue(korrigierterWert);
                 slider.setValue(korrigierterWert);
             }
+            erfolgsBalken.setVisible(false);
         });
         empfehlungsparameterFelder.put(empfehlungsparameter.getDefinition(), slider);
         return new HorizontalLayout(slider, feld);
@@ -121,6 +132,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         empfehlungsparameterFelder.forEach((definition, slider) -> neueParameterWerte.put(definition,slider.getValue()));
         try{
             empfehlungsparameterService.speichern(neueParameterWerte);
+            erfolgsBalken.setVisible(true);
         }catch(IllegalArgumentException e){
             Notification.show(e.getMessage());
         }
