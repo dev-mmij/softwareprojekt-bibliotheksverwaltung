@@ -29,7 +29,7 @@ import java.util.Map;
  */
 
 @PageTitle("Empfehlungsparameter")
-@Route("admin/empfehlungsparamter")
+@Route("admin/empfehlungsparameter")
 @Menu(order = 100, icon= LineAwesomeIconUrl.COG_SOLID)
 @RolesAllowed("ADMIN")
 
@@ -127,7 +127,11 @@ public class EmpfehlungsparameterView extends VerticalLayout {
 
     }
     private void zuruecksetzen(){
-        empfehlungsparameterService.zuruecksetzen();
+        try{
+            empfehlungsparameterService.zuruecksetzen();
+        } catch (IllegalArgumentException e){
+            Notification.show(e.getMessage());
+        }
         empfehlungsparameterFelder.clear();
         empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameter());
     }

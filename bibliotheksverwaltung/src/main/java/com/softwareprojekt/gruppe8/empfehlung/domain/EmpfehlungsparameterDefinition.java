@@ -42,8 +42,7 @@ public enum EmpfehlungsparameterDefinition {
     }
     public void pruefe(double wert){
         if (!istGueltig(wert)){
-            throw new IllegalArgumentException("Ungültiger Wert " + wert + " für " + name()
-                    + ". Der Wert muss zwischen " + minimum + " und " + maximum + " liegen.");
+            throw new IllegalArgumentException("Ungültiger Wert " + wert + " für " + name());
         }
     }
 
