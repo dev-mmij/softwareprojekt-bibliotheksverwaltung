@@ -37,7 +37,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
 
     private final EmpfehlungsparameterService  empfehlungsparameterService;
     private final Grid<Empfehlungsparameter> empfehlungsparameterGrid;
-    private final Map<String, DecimalSlider> parameterFelder = new HashMap<>();
+    private final Map<EmpfehlungsparameterDefinition, DecimalSlider> empfehlungsparameterFelder = new HashMap<>();
 
     public EmpfehlungsparameterView(EmpfehlungsparameterService empfehlungsparameterService) {
 
@@ -51,7 +51,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         empfehlungsparameterGrid = new Grid<>();
         empfehlungsparameterGrid.addComponentColumn(this::parameterMitBeschreibung).setHeader("Parameter & Beschreibung");
         empfehlungsparameterGrid.addComponentColumn(this::wertEingabe).setHeader("Wert");
-        empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameters());
+        empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameter());
         empfehlungsparameterGrid.setAllRowsVisible(true);
 
         //Button zum Speichern und Zuruecksetzen
@@ -74,7 +74,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
      * @return VerticalLayout mit Kennung und Beschreibung eiens Empfehlungsparameters
      */
     private VerticalLayout parameterMitBeschreibung(Empfehlungsparameter empfehlungsparameter) {
-        H4 parameterKennung = new H4(empfehlungsparameter.getKennung());
+        H4 parameterKennung = new H4(empfehlungsparameter.getDefinition().name());
         Paragraph parameterBeschreibung = new Paragraph(empfehlungsparameter.getBeschreibung());
         VerticalLayout zelle = new VerticalLayout(parameterKennung, parameterBeschreibung);
         zelle.setSpacing(false);
@@ -87,7 +87,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
      * @return HorizontalLayout mit DecimalSlider und NumberField zum Einstellen eines Empfehlungsparamters.
      */
     private HorizontalLayout wertEingabe(Empfehlungsparameter empfehlungsparameter) {
-        EmpfehlungsparameterDefinition parameterDefinition = EmpfehlungsparameterDefinition.valueOf(empfehlungsparameter.getKennung());
+        EmpfehlungsparameterDefinition parameterDefinition = empfehlungsparameter.getDefinition();
         //Slider
         DecimalSlider slider = new DecimalSlider(parameterDefinition.getMinimum(), parameterDefinition.getMaximum());
         slider.setStep(parameterDefinition.getSchrittweite());
@@ -112,13 +112,13 @@ public class EmpfehlungsparameterView extends VerticalLayout {
                 slider.setValue(korrigierterWert);
             }
         });
-        parameterFelder.put(empfehlungsparameter.getKennung(), slider);
+        empfehlungsparameterFelder.put(empfehlungsparameter.getDefinition(), slider);
         return new HorizontalLayout(slider, feld);
     }
 
     private void speichern(){
-        Map<String, Double> neueParameterWerte = new HashMap<>();
-        parameterFelder.forEach((kennung,slider) -> neueParameterWerte.put(kennung,slider.getValue()));
+        Map<EmpfehlungsparameterDefinition, Double> neueParameterWerte = new HashMap<>();
+        empfehlungsparameterFelder.forEach((definition, slider) -> neueParameterWerte.put(definition,slider.getValue()));
         try{
             empfehlungsparameterService.speichern(neueParameterWerte);
         }catch(IllegalArgumentException e){
@@ -128,7 +128,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
     }
     private void zuruecksetzen(){
         empfehlungsparameterService.zuruecksetzen();
-        parameterFelder.clear();
-        empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameters());
+        empfehlungsparameterFelder.clear();
+        empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameter());
     }
 }

@@ -20,22 +20,21 @@ public class EmpfehlungsparameterService {
         this.empfehlungsparameterRepository = empfehlungsparameterRepository;
     }
 
-    public List<Empfehlungsparameter> getEmpfehlungsparameters(){
+    public List<Empfehlungsparameter> getEmpfehlungsparameter(){
         return empfehlungsparameterRepository.findAll().stream()
-                .sorted(Comparator.comparing(Empfehlungsparameter::getKennung))
+                .sorted(Comparator.comparing(Empfehlungsparameter::getDefinition))
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public void speichern(Map<String, Double> parameterWerte){
-        parameterWerte.forEach((kennung, wert) -> {
-            EmpfehlungsparameterDefinition parameterDefinition = EmpfehlungsparameterDefinition.valueOf(kennung);
-            if(!parameterDefinition.istGueltig(wert)){
-                throw new IllegalArgumentException(kennung + " muss zwischen " + parameterDefinition.getMinimum()
-                + " und " + parameterDefinition.getMaximum() + " liegen.");
+    public void speichern(Map<EmpfehlungsparameterDefinition, Double> parameterWerte){
+        parameterWerte.forEach((definition, wert) -> {
+            if(!definition.istGueltig(wert)){
+                throw new IllegalArgumentException(definition + " muss zwischen " + definition.getMinimum()
+                + " und " + definition.getMaximum() + " liegen.");
         }});
 
-        parameterWerte.forEach((kennung, wert) -> empfehlungsparameterRepository.findByKennung(kennung)
+        parameterWerte.forEach((definition, wert) -> empfehlungsparameterRepository.findByDefinition(definition)
                 .orElseThrow().setWert(wert));
     }
 

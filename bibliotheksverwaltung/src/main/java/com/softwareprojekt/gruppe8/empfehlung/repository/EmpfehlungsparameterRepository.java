@@ -1,6 +1,7 @@
 package com.softwareprojekt.gruppe8.empfehlung.repository;
 
 import com.softwareprojekt.gruppe8.empfehlung.domain.Empfehlungsparameter;
+import com.softwareprojekt.gruppe8.empfehlung.domain.EmpfehlungsparameterDefinition;
 import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.Optional;
@@ -11,5 +12,5 @@ import java.util.Optional;
  */
 
 public interface EmpfehlungsparameterRepository extends ListCrudRepository<Empfehlungsparameter, Long> {
-    Optional<Empfehlungsparameter> findByKennung(String kennung);
+    Optional<Empfehlungsparameter> findByDefinition(EmpfehlungsparameterDefinition definition);
 }
