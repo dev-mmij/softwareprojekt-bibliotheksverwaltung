@@ -35,15 +35,42 @@
     color: var(--readly-text-sekundaer);
 }
 
-.empfehlungsparameter-view .erfolgsmeldung {
-    width: 100%;
-    box-sizing: border-box;
-    padding: var(--lumo-space-s) var(--lumo-space-m);
+.empfehlungsparameter-view .statusmeldung {
+    display: flex;
+    align-items: center;
+    gap: var(--lumo-space-s);
+    margin-right: auto;
+    padding: var(--lumo-space-xs) var(--lumo-space-m);
     border-radius: 8px;
-    background: var(--lumo-success-color-10pct);
-    color: var(--lumo-success-text-color);
     font-size: var(--lumo-font-size-s);
     font-weight: 500;
+}
+
+.empfehlungsparameter-view .statusmeldung vaadin-icon {
+    width: var(--lumo-icon-size-s);
+    height: var(--lumo-icon-size-s);
+}
+
+
+.empfehlungsparameter-view .statusmeldung.status-hinweis {
+    background: rgba(200, 150, 62, 0.15);
+    color: var(--readly-text);
+}
+
+.empfehlungsparameter-view .statusmeldung.status-hinweis vaadin-icon {
+    color: var(--readly-akzent);
+}
+
+
+.empfehlungsparameter-view .statusmeldung.status-erfolg {
+    background: var(--lumo-success-color-10pct);
+    color: var(--lumo-success-text-color);
+}
+
+
+.empfehlungsparameter-view .statusmeldung.status-fehler {
+    background: var(--lumo-error-color-10pct);
+    color: var(--lumo-error-text-color);
 }
 
 .empfehlungsparameter-view vaadin-grid {

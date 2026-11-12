@@ -40,8 +40,11 @@ public class EmpfehlungsparameterView extends VerticalLayout {
 
     private final EmpfehlungsparameterService  empfehlungsparameterService;
     private final Grid<Empfehlungsparameter> empfehlungsparameterGrid;
-    private final Map<EmpfehlungsparameterDefinition, DecimalSlider> empfehlungsparameterFelder = new HashMap<>();
-    private final Div erfolgsBalken;
+    private final Map<Empfehlungsparameter, DecimalSlider> empfehlungsparameterFelder = new HashMap<>();
+    private final Div statusBalken;
+
+
+    private enum Statusart {ERFOLG, FEHLER, HINWEIS}
 
     public EmpfehlungsparameterView(EmpfehlungsparameterService empfehlungsparameterService) {
 
@@ -55,12 +58,10 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         Paragraph seitenBeschreibung = new Paragraph("Lege fest, wie Readly Interessen gewichtet und neue Bücher empfiehlt.");
         seitenBeschreibung.addClassName("seiten-beschreibung");
 
-        //Erfolgsbalken
-        Icon erfolgsIcon = new Icon(VaadinIcon.CHECK);
-        Span erfolgsText = new Span(" Speichern der Daten erfolgreich!");
-        erfolgsBalken = new Div(erfolgsIcon, erfolgsText);
-        erfolgsBalken.setVisible(false);
-        erfolgsBalken.addClassName("erfolgsmeldung");
+        //Statusbalken
+        statusBalken = new Div();
+        statusBalken.setVisible(false);
+        statusBalken.addClassName("statusmeldung");
 
         //Tabelle der Empfehlungsparameter
         empfehlungsparameterGrid = new Grid<>();
@@ -76,12 +77,12 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         Button speicherButton = new Button("Speichern");
         speicherButton.addClickListener(e -> speichern());
         speicherButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        HorizontalLayout buttonLeiste = new HorizontalLayout(zuruecksetzButton, speicherButton);
+        HorizontalLayout buttonLeiste = new HorizontalLayout(statusBalken, zuruecksetzButton, speicherButton);
         buttonLeiste.addClassName("button-leiste");
 
 
         //Hinzufuegen aller Elemente
-        add(ueberschrift,  seitenBeschreibung, erfolgsBalken, empfehlungsparameterGrid, buttonLeiste);
+        add(ueberschrift,  seitenBeschreibung, empfehlungsparameterGrid, buttonLeiste);
     }
 
     /**
@@ -126,7 +127,7 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         //Synchronisieren der beiden Elemente
         slider.addValueChangeListener(e -> {
             feld.setValue(e.getValue());
-            erfolgsBalken.setVisible(false);
+            aktualisiereAenderungsstatus();
         });
         feld.addValueChangeListener(e -> {
             if(e.getValue() == null) {
@@ -136,32 +137,68 @@ public class EmpfehlungsparameterView extends VerticalLayout {
                 feld.setValue(korrigierterWert);
                 slider.setValue(korrigierterWert);
             }
-            erfolgsBalken.setVisible(false);
+            aktualisiereAenderungsstatus();
         });
-        empfehlungsparameterFelder.put(empfehlungsparameter.getDefinition(), slider);
+        empfehlungsparameterFelder.put(empfehlungsparameter, slider);
         HorizontalLayout wertEingabe = new HorizontalLayout(slider,feld);
         wertEingabe.addClassName("wert-eingabe");
         return wertEingabe;
     }
 
+    private void aktualisiereAenderungsstatus(){
+        if(gibtUngespeicherteAenderungen()){
+            zeigeStatus(Statusart.HINWEIS, "Ungespeicherte Änderungen");
+        }
+        else{
+            statusBalken.setVisible(false);
+        }
+    }
+
+    private void zeigeStatus(Statusart status, String text){
+        VaadinIcon statusIcon = switch(status){
+            case HINWEIS -> VaadinIcon.INFO_CIRCLE;
+            case ERFOLG -> VaadinIcon.CHECK_CIRCLE;
+            case FEHLER -> VaadinIcon.WARNING;
+        };
+        statusBalken.removeAll();
+        statusBalken.add(new Icon(statusIcon), new Span(text));
+        statusBalken.setClassName("status-hinweis", status == Statusart.HINWEIS);
+        statusBalken.setClassName("status-erfolg", status == Statusart.ERFOLG);
+        statusBalken.setClassName("status-fehler", status == Statusart.FEHLER);
+        statusBalken.setVisible(true);
+    }
+
     private void speichern(){
         Map<EmpfehlungsparameterDefinition, Double> neueParameterWerte = new HashMap<>();
-        empfehlungsparameterFelder.forEach((definition, slider) -> neueParameterWerte.put(definition,slider.getValue()));
+        empfehlungsparameterFelder.forEach((parameter, slider) -> neueParameterWerte.put(parameter.getDefinition(),slider.getValue()));
         try{
             empfehlungsparameterService.speichern(neueParameterWerte);
-            erfolgsBalken.setVisible(true);
+            statusBalken.setVisible(true);
+            empfehlungsparameterFelder.clear();
+            empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameter());
+            zeigeStatus(Statusart.ERFOLG, "Die Änderungen wurden erfolgreich gespeichert.");
         }catch(IllegalArgumentException e){
-            Notification.show(e.getMessage());
+            zeigeStatus(Statusart.FEHLER, e.getMessage());
         }
 
     }
     private void zuruecksetzen(){
         try{
             empfehlungsparameterService.zuruecksetzen();
+            zeigeStatus(Statusart.ERFOLG, "Die Empfehlungsparameter wurden erfolgreich zurückgesetzt.");
         } catch (IllegalArgumentException e){
-            Notification.show(e.getMessage());
+            zeigeStatus(Statusart.FEHLER, e.getMessage());
         }
         empfehlungsparameterFelder.clear();
         empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameter());
+    }
+
+    private boolean gibtUngespeicherteAenderungen(){
+        for(Map.Entry<Empfehlungsparameter, DecimalSlider> eintrag : empfehlungsparameterFelder.entrySet()){
+            if(eintrag.getKey().getWert() != eintrag.getValue().getValue()){
+                return true;
+            }
+        }
+        return false;
     }
 }
