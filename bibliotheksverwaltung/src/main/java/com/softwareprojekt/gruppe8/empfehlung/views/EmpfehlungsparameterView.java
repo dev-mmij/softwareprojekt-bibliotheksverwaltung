@@ -10,7 +10,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.slider.DecimalSlider;
@@ -27,18 +26,19 @@ import java.util.Map;
 
 /**
  * Admin-Ansicht zum Einstellen der Empfehlungsparameter
+ *
  * @author Niklas Prell
  */
 
 @PageTitle("Empfehlungsparameter")
 @Route("admin/empfehlungsparameter")
-@Menu(order = 100, icon= LineAwesomeIconUrl.COG_SOLID)
+@Menu(order = 100, icon = LineAwesomeIconUrl.COG_SOLID)
 @RolesAllowed("ADMIN")
 @StyleSheet("styles/empfehlung/empfehlungsparameter.css")
 
 public class EmpfehlungsparameterView extends VerticalLayout {
 
-    private final EmpfehlungsparameterService  empfehlungsparameterService;
+    private final EmpfehlungsparameterService empfehlungsparameterService;
     private final Grid<Empfehlungsparameter> empfehlungsparameterGrid;
     private final Map<Empfehlungsparameter, DecimalSlider> empfehlungsparameterFelder = new HashMap<>();
     private final Div statusBalken;
@@ -82,14 +82,15 @@ public class EmpfehlungsparameterView extends VerticalLayout {
 
 
         //Hinzufuegen aller Elemente
-        add(ueberschrift,  seitenBeschreibung, empfehlungsparameterGrid, buttonLeiste);
+        add(ueberschrift, seitenBeschreibung, empfehlungsparameterGrid, buttonLeiste);
     }
 
     /**
-     * Liefert einen VerticalLayout mit der Kennung eines Empfehlungsparameters mit der Beschreibung unten
+     * Liefert ein VerticalLayout mit der Kennung eines Empfehlungsparameters mit der Beschreibung unten
      * drunter.
+     *
      * @param empfehlungsparameter
-     * @return VerticalLayout mit Kennung und Beschreibung eiens Empfehlungsparameters
+     * @return VerticalLayout mit Kennung und Beschreibung eines Empfehlungsparameters
      */
     private VerticalLayout parameterMitBeschreibung(Empfehlungsparameter empfehlungsparameter) {
         H4 parameterKennung = new H4(empfehlungsparameter.getDefinition().name());
@@ -104,8 +105,9 @@ public class EmpfehlungsparameterView extends VerticalLayout {
 
     /**
      * Liefert ein HorizontalLayout mit den Werten eines Parameters als Slider und Feld.
+     *
      * @param empfehlungsparameter
-     * @return HorizontalLayout mit DecimalSlider und NumberField zum Einstellen eines Empfehlungsparamters.
+     * @return HorizontalLayout mit DecimalSlider und NumberField zum Einstellen eines Empfehlungsparameters.
      */
     private HorizontalLayout wertEingabe(Empfehlungsparameter empfehlungsparameter) {
         EmpfehlungsparameterDefinition parameterDefinition = empfehlungsparameter.getDefinition();
@@ -130,9 +132,9 @@ public class EmpfehlungsparameterView extends VerticalLayout {
             aktualisiereAenderungsstatus();
         });
         feld.addValueChangeListener(e -> {
-            if(e.getValue() == null) {
+            if (e.getValue() == null) {
                 feld.setValue(parameterDefinition.getMinimum());
-            } else{
+            } else {
                 double korrigierterWert = parameterDefinition.naechsterGueltigerWert(e.getValue());
                 feld.setValue(korrigierterWert);
                 slider.setValue(korrigierterWert);
@@ -140,22 +142,21 @@ public class EmpfehlungsparameterView extends VerticalLayout {
             aktualisiereAenderungsstatus();
         });
         empfehlungsparameterFelder.put(empfehlungsparameter, slider);
-        HorizontalLayout wertEingabe = new HorizontalLayout(slider,feld);
+        HorizontalLayout wertEingabe = new HorizontalLayout(slider, feld);
         wertEingabe.addClassName("wert-eingabe");
         return wertEingabe;
     }
 
-    private void aktualisiereAenderungsstatus(){
-        if(gibtUngespeicherteAenderungen()){
+    private void aktualisiereAenderungsstatus() {
+        if (gibtUngespeicherteAenderungen()) {
             zeigeStatus(Statusart.HINWEIS, "Ungespeicherte Änderungen");
-        }
-        else{
+        } else {
             statusBalken.setVisible(false);
         }
     }
 
-    private void zeigeStatus(Statusart status, String text){
-        VaadinIcon statusIcon = switch(status){
+    private void zeigeStatus(Statusart status, String text) {
+        VaadinIcon statusIcon = switch (status) {
             case HINWEIS -> VaadinIcon.INFO_CIRCLE;
             case ERFOLG -> VaadinIcon.CHECK_CIRCLE;
             case FEHLER -> VaadinIcon.WARNING;
@@ -168,34 +169,34 @@ public class EmpfehlungsparameterView extends VerticalLayout {
         statusBalken.setVisible(true);
     }
 
-    private void speichern(){
+    private void speichern() {
         Map<EmpfehlungsparameterDefinition, Double> neueParameterWerte = new HashMap<>();
-        empfehlungsparameterFelder.forEach((parameter, slider) -> neueParameterWerte.put(parameter.getDefinition(),slider.getValue()));
-        try{
-            empfehlungsparameterService.speichern(neueParameterWerte);
-            statusBalken.setVisible(true);
-            empfehlungsparameterFelder.clear();
+        empfehlungsparameterFelder.forEach((parameter, slider) -> neueParameterWerte.put(parameter.getDefinition(), slider.getValue()));
+        try {
             empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameter());
             zeigeStatus(Statusart.ERFOLG, "Die Änderungen wurden erfolgreich gespeichert.");
-        }catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             zeigeStatus(Statusart.FEHLER, e.getMessage());
         }
+        empfehlungsparameterService.speichern(neueParameterWerte);
+        empfehlungsparameterFelder.clear();
 
     }
-    private void zuruecksetzen(){
-        try{
+
+    private void zuruecksetzen() {
+        try {
             empfehlungsparameterService.zuruecksetzen();
             zeigeStatus(Statusart.ERFOLG, "Die Empfehlungsparameter wurden erfolgreich zurückgesetzt.");
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             zeigeStatus(Statusart.FEHLER, e.getMessage());
         }
         empfehlungsparameterFelder.clear();
         empfehlungsparameterGrid.setItems(empfehlungsparameterService.getEmpfehlungsparameter());
     }
 
-    private boolean gibtUngespeicherteAenderungen(){
-        for(Map.Entry<Empfehlungsparameter, DecimalSlider> eintrag : empfehlungsparameterFelder.entrySet()){
-            if(eintrag.getKey().getWert() != eintrag.getValue().getValue()){
+    private boolean gibtUngespeicherteAenderungen() {
+        for (Map.Entry<Empfehlungsparameter, DecimalSlider> eintrag : empfehlungsparameterFelder.entrySet()) {
+            if (eintrag.getKey().getWert() != eintrag.getValue().getValue()) {
                 return true;
             }
         }
