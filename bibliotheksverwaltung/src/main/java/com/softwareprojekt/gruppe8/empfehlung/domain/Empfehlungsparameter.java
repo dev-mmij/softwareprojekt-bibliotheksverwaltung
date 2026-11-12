@@ -15,9 +15,10 @@ public class Empfehlungsparameter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long parameterId;
 
-    //Eindeutiger technischer Name eines Parameters
-    @Column(nullable = false, unique = true)
-    private String kennung;
+    //Definition des gesamten Parameters, Zuordnung in der Datenbank ist als Kennung gespeichert
+    @Enumerated(EnumType.STRING)
+    @Column(name = "kennung", nullable = false, unique = true)
+    private EmpfehlungsparameterDefinition definition;
 
     @Column(nullable = false)
     private double wert;
@@ -32,8 +33,9 @@ public class Empfehlungsparameter {
         super();
     }
 
-    public Empfehlungsparameter(String kennung, double standardwert, String beschreibung){
-        this.kennung = kennung;
+    public Empfehlungsparameter(EmpfehlungsparameterDefinition definition, double standardwert, String beschreibung){
+        definition.pruefe(standardwert);
+        this.definition = definition;
         this.wert = standardwert; //neuer Empfehlungsparameter startet mit Standardwert
         this.standardwert = standardwert;
         this.beschreibung = beschreibung;
@@ -42,13 +44,14 @@ public class Empfehlungsparameter {
     public Long getParameterId(){
         return parameterId;
     }
-    public String getKennung(){
-        return kennung;
+    public EmpfehlungsparameterDefinition getDefinition(){
+        return definition;
     }
     public double getWert(){
         return wert;
     }
     public void setWert(double wert){
+        definition.pruefe(wert);
         this.wert = wert;
     }
     public double getStandardwert(){
@@ -61,6 +64,6 @@ public class Empfehlungsparameter {
         this.beschreibung = beschreibung;
     }
     public void aufStandardZuruecksetzen(){
-        this.wert = standardwert;
+        setWert(standardwert);
     }
 }
