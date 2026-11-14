@@ -7,6 +7,7 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.SvgIcon;
@@ -14,8 +15,6 @@ import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
-import com.vaadin.flow.router.AfterNavigationEvent;
-import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.Layout;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -35,9 +34,9 @@ import java.util.Optional;
  */
 @Layout
 @AnonymousAllowed
-public class MainLayout extends AppLayout implements AfterNavigationObserver {
+@StyleSheet("styles/styles.css")
+public class MainLayout extends AppLayout {
 
-    private H1 viewTitle;
 
     private AuthenticatedUser authenticatedUser;
     private AccessAnnotationChecker accessChecker;
@@ -49,14 +48,12 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
         setPrimarySection(Section.NAVBAR);
         addDrawerContent();
         addHeaderContent();
+        addClassName("readly-layout");
     }
 
     private void addHeaderContent() {
         DrawerToggle toggle = new DrawerToggle();
         toggle.setAriaLabel("Menu toggle");
-
-        viewTitle = new H1();
-        viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
 
         addToNavbar(true, toggle, createLogo(), createUserMenu());
     }
@@ -76,12 +73,11 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
                 nav.addItem(new SideNavItem(entry.title(), entry.path()));
             }
         });
-
         return nav;
     }
 
-    private Footer createUserMenu() {
-        Footer layout = new Footer();
+    private Div createUserMenu() {
+        Div layout = new Div();
 
         Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
@@ -92,7 +88,6 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
                     .fromInputStream(event -> new DownloadResponse(new ByteArrayInputStream(user.getProfilePicture()),
                             "profile-pic", "image/jpeg", -1));
             avatar.setImageHandler(imageHandler);
-            avatar.setThemeName("xsmall");
             avatar.getElement().setAttribute("tabindex", "-1");
 
             MenuBar userMenu = new MenuBar();
@@ -103,7 +98,7 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
             div.add(avatar);
             div.add(user.getName());
             div.add(new Icon("lumo", "dropdown"));
-            div.addClassNames(LumoUtility.Display.FLEX, LumoUtility.AlignItems.CENTER, LumoUtility.Gap.SMALL);
+            div.addClassName("benutzer-anzeige");
             userName.add(div);
             userName.getSubMenu().addItem("Sign out", e -> {
                 authenticatedUser.logout();
@@ -114,23 +109,17 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
             Anchor loginLink = new Anchor("login", "Sign in");
             layout.add(loginLink);
         }
-
+        layout.addClassName("benutzer-menue");
         return layout;
     }
 
-    private Component createLogo(){
+    private Component createLogo() {
         Image logoImage = new Image("icons/logo.png", "Readly Logo");
+        logoImage.addClassName("logo-image");
         Span logoText = new Span("Readly");
+        logoText.addClassName("logo-text");
         Div logoDiv = new Div(logoImage, logoText);
+        logoDiv.addClassNames("logo");
         return logoDiv;
-    }
-
-    @Override
-    public void afterNavigation(AfterNavigationEvent event) {
-        viewTitle.setText(getCurrentPageTitle());
-    }
-
-    private String getCurrentPageTitle() {
-        return MenuConfiguration.getPageHeader(getContent()).orElse("");
     }
 }

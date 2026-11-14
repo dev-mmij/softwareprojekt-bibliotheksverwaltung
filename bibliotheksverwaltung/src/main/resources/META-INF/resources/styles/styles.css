@@ -33,6 +33,7 @@ vaadin-app-layout::part(navbar) {
 vaadin-app-layout::part(drawer) {
     background: var(--readly-flaeche);
     border-right: 1px solid var(--readly-rahmen);
+    width: 260px;
 }
 
 .readly-layout .logo {
@@ -41,7 +42,7 @@ vaadin-app-layout::part(drawer) {
     gap: var(--lumo-space-s);
 }
 
-.readly-layout .logo-bild {
+.readly-layout .logo-image {
     height: 36px;
 }
 
@@ -54,6 +55,17 @@ vaadin-app-layout::part(drawer) {
 
 .readly-layout .benutzer-menue {
     margin-left: auto;
+}
+
+.readly-layout .benutzer-anzeige {
+    display: flex;
+    align-items: center;
+    gap: var(--lumo-space-s);
+    font-weight: 500;
+}
+
+.readly-layout .benutzer-anzeige vaadin-avatar {
+    --vaadin-avatar-size: 32px;
 }
 
 .readly-layout vaadin-side-nav {
