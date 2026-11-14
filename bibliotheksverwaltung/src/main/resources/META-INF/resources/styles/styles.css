@@ -21,19 +21,45 @@ html {
 body {
     background: var(--readly-hintergrund);
 }
-
-vaadin-app-layout::part(navbar) {
+/* Obere Leiste */
+.readly-layout::part(navbar) {
     min-height: 64px;
-    padding: 0 var(--lumo-space-l);
+    padding: 0 var(--lumo-space-l) 0 var(--lumo-space-s);
     background: var(--readly-flaeche);
     border-bottom: 1px solid var(--readly-rahmen);
     box-shadow: none;
 }
 
-vaadin-app-layout::part(drawer) {
+/*Seitenleiste */
+.readly-layout::part(drawer) {
     background: var(--readly-flaeche);
     border-right: 1px solid var(--readly-rahmen);
     width: 280px;
+}
+
+.readly-layout .navigation{
+    display: flex;
+    flex-direction: column;
+    gap: var(--lumo-space-m);
+    min-height: 100%;
+    box-sizing: border-box;
+    padding: var(--lumo-space-l) var(--lumo-space-m);
+}
+
+.readly-layout .seiten-navigation::part(label){
+    font-size: var(--lumo-font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--readly-text-sekundaer);
+}
+
+.readly-layout vaadin-side-nav-item:not([current])::part(content):hover{
+    background: var(--readly-hintergrund);
+}
+
+.readly-layout .admin-navigation{
+    margin-top: auto;
 }
 
 .readly-layout .logo {
@@ -66,8 +92,4 @@ vaadin-app-layout::part(drawer) {
 
 .readly-layout .benutzer-anzeige vaadin-avatar {
     --vaadin-avatar-size: 32px;
-}
-
-.readly-layout vaadin-side-nav {
-    padding: var(--lumo-space-m) var(--lumo-space-s);
 }

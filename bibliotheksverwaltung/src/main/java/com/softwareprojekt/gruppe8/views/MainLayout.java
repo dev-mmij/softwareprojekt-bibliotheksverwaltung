@@ -22,11 +22,10 @@ import com.vaadin.flow.server.menu.MenuConfiguration;
 import com.vaadin.flow.server.menu.MenuEntry;
 import com.vaadin.flow.server.streams.DownloadHandler;
 import com.vaadin.flow.server.streams.DownloadResponse;
-import com.vaadin.flow.theme.lumo.LumoUtility;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;
-import java.util.TreeMap;
+
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -36,7 +35,7 @@ import java.util.TreeMap;
 @Layout
 @AnonymousAllowed
 @StyleSheet("styles/styles.css")
-public class MainLayout extends AppLayout {
+public class MainLayout extends AppLayout{
 
 
     private AuthenticatedUser authenticatedUser;
@@ -65,10 +64,12 @@ public class MainLayout extends AppLayout {
 
     private Div createNavigation() {
         Div nav = new Div();
+        nav.addClassName("navigation");
         SideNav entdeckenNav = createSideNavGroup("Entdecken");
         SideNav lesenNav = createSideNavGroup("Lesen");
         SideNav handelNav = createSideNavGroup("Handel");
         SideNav adminNav = createSideNavGroup("Administration");
+        adminNav.addClassName("admin-navigation");
 
         List<MenuEntry> menuEntries = MenuConfiguration.getMenuEntries();
         menuEntries.forEach(entry -> {
@@ -91,11 +92,10 @@ public class MainLayout extends AppLayout {
             }
         });
 
-        nav.add(entdeckenNav);
-        nav.add(lesenNav);
-        nav.add(handelNav);
-        nav.add(adminNav);
-
+        nav.add(entdeckenNav, lesenNav, handelNav);
+        if(!adminNav.getItems().isEmpty()){
+            nav.add(adminNav);
+        }
         return nav;
     }
 
@@ -148,6 +148,8 @@ public class MainLayout extends AppLayout {
 
     private SideNav createSideNavGroup(String header){
         SideNav sideNav = new SideNav(header);
+        sideNav.addClassName("seiten-navigation");
         return sideNav;
     }
+
 }
