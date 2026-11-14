@@ -33,7 +33,7 @@ vaadin-app-layout::part(navbar) {
 vaadin-app-layout::part(drawer) {
     background: var(--readly-flaeche);
     border-right: 1px solid var(--readly-rahmen);
-    width: 260px;
+    width: 280px;
 }
 
 .readly-layout .logo {

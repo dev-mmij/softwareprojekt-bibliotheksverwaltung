@@ -26,6 +26,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeMap;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -62,17 +63,39 @@ public class MainLayout extends AppLayout {
         addToDrawer(new Scroller(createNavigation()));
     }
 
-    private SideNav createNavigation() {
-        SideNav nav = new SideNav();
+    private Div createNavigation() {
+        Div nav = new Div();
+        SideNav entdeckenNav = createSideNavGroup("Entdecken");
+        SideNav lesenNav = createSideNavGroup("Lesen");
+        SideNav handelNav = createSideNavGroup("Handel");
+        SideNav adminNav = createSideNavGroup("Administration");
 
         List<MenuEntry> menuEntries = MenuConfiguration.getMenuEntries();
         menuEntries.forEach(entry -> {
+            double placement = entry.order() != null ? entry.order(): 0.0;
+            SideNavItem item;
             if (entry.icon() != null) {
-                nav.addItem(new SideNavItem(entry.title(), entry.path(), new SvgIcon(entry.icon())));
+                item = new SideNavItem(entry.title(), entry.path(), new SvgIcon(entry.icon()));
             } else {
-                nav.addItem(new SideNavItem(entry.title(), entry.path()));
+                item = new SideNavItem(entry.title(), entry.path());
+            }
+
+            if (placement >= 900){
+                adminNav.addItem(item);
+            } else if (placement >= 300){
+                handelNav.addItem(item);
+            } else if (placement >= 200){
+                lesenNav.addItem(item);
+            } else{
+                entdeckenNav.addItem(item);
             }
         });
+
+        nav.add(entdeckenNav);
+        nav.add(lesenNav);
+        nav.add(handelNav);
+        nav.add(adminNav);
+
         return nav;
     }
 
@@ -100,13 +123,13 @@ public class MainLayout extends AppLayout {
             div.add(new Icon("lumo", "dropdown"));
             div.addClassName("benutzer-anzeige");
             userName.add(div);
-            userName.getSubMenu().addItem("Sign out", e -> {
+            userName.getSubMenu().addItem("Abmelden", e -> {
                 authenticatedUser.logout();
             });
 
             layout.add(userMenu);
         } else {
-            Anchor loginLink = new Anchor("login", "Sign in");
+            Anchor loginLink = new Anchor("login", "Anmelden");
             layout.add(loginLink);
         }
         layout.addClassName("benutzer-menue");
@@ -121,5 +144,10 @@ public class MainLayout extends AppLayout {
         Div logoDiv = new Div(logoImage, logoText);
         logoDiv.addClassNames("logo");
         return logoDiv;
+    }
+
+    private SideNav createSideNavGroup(String header){
+        SideNav sideNav = new SideNav(header);
+        return sideNav;
     }
 }
