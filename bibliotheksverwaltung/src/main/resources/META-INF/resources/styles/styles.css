@@ -1,0 +1,61 @@
+html {
+    --readly-primaer: #7A2E3A;
+    --readly-akzent: #C8963E;
+    --readly-hintergrund: #F7F1E8;
+    --readly-flaeche: #FFFDF8;
+    --readly-text: #2B2420;
+    --readly-text-sekundaer: #6E625A;
+    --readly-rahmen: #E3D8C9;
+
+    --lumo-primary-color: var(--readly-primaer);
+    --lumo-primary-text-color: var(--readly-primaer);
+    --lumo-primary-color-50pct: rgba(122, 46, 58, 0.5);
+    --lumo-primary-color-10pct: rgba(122, 46, 58, 0.1);
+    --lumo-body-text-color: var(--readly-text);
+    --lumo-header-text-color: var(--readly-text);
+    --lumo-secondary-text-color: var(--readly-text-sekundaer);
+
+    --readly-schrift-ueberschrift: "Fraunces", Georgia, serif;
+}
+
+body {
+    background: var(--readly-hintergrund);
+}
+
+vaadin-app-layout::part(navbar) {
+    min-height: 64px;
+    padding: 0 var(--lumo-space-l);
+    background: var(--readly-flaeche);
+    border-bottom: 1px solid var(--readly-rahmen);
+    box-shadow: none;
+}
+
+vaadin-app-layout::part(drawer) {
+    background: var(--readly-flaeche);
+    border-right: 1px solid var(--readly-rahmen);
+}
+
+.readly-layout .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--lumo-space-s);
+}
+
+.readly-layout .logo-bild {
+    height: 36px;
+}
+
+.readly-layout .logo-text {
+    font-family: var(--readly-schrift-ueberschrift);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--readly-text);
+}
+
+.readly-layout .benutzer-menue {
+    margin-left: auto;
+}
+
+.readly-layout vaadin-side-nav {
+    padding: var(--lumo-space-m) var(--lumo-space-s);
+}
