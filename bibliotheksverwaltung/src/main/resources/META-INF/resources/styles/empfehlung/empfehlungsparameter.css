@@ -1,21 +1,4 @@
-
 .empfehlungsparameter-view {
-    --readly-primaer: #7A2E3A;
-    --readly-akzent: #C8963E;
-    --readly-hintergrund: #F7F1E8;
-    --readly-flaeche: #FFFDF8;
-    --readly-text: #2B2420;
-    --readly-text-sekundaer: #6E625A;
-    --readly-rahmen: #E3D8C9;
-
-    --lumo-primary-color: var(--readly-primaer);
-    --lumo-primary-text-color: var(--readly-primaer);
-    --lumo-primary-color-50pct: rgba(122, 46, 58, 0.5);
-    --lumo-primary-color-10pct: rgba(122, 46, 58, 0.1);
-    --lumo-body-text-color: var(--readly-text);
-    --lumo-header-text-color: var(--readly-text);
-    --lumo-secondary-text-color: var(--readly-text-sekundaer);
-
     background: var(--readly-hintergrund);
     min-height: 100%;
     box-sizing: border-box;

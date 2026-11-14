@@ -32,7 +32,7 @@ import java.util.Map;
 
 @PageTitle("Empfehlungsparameter")
 @Route("admin/empfehlungsparameter")
-@Menu(order = 100, icon = LineAwesomeIconUrl.COG_SOLID)
+@Menu(order = 900, icon = LineAwesomeIconUrl.COG_SOLID)
 @RolesAllowed("ADMIN")
 @StyleSheet("styles/empfehlung/empfehlungsparameter.css")
 

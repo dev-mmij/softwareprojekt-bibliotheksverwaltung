@@ -1,0 +1,95 @@
+html {
+    --readly-primaer: #7A2E3A;
+    --readly-akzent: #C8963E;
+    --readly-hintergrund: #F7F1E8;
+    --readly-flaeche: #FFFDF8;
+    --readly-text: #2B2420;
+    --readly-text-sekundaer: #6E625A;
+    --readly-rahmen: #E3D8C9;
+
+    --lumo-primary-color: var(--readly-primaer);
+    --lumo-primary-text-color: var(--readly-primaer);
+    --lumo-primary-color-50pct: rgba(122, 46, 58, 0.5);
+    --lumo-primary-color-10pct: rgba(122, 46, 58, 0.1);
+    --lumo-body-text-color: var(--readly-text);
+    --lumo-header-text-color: var(--readly-text);
+    --lumo-secondary-text-color: var(--readly-text-sekundaer);
+
+    --readly-schrift-ueberschrift: "Fraunces", Georgia, serif;
+}
+
+body {
+    background: var(--readly-hintergrund);
+}
+/* Obere Leiste */
+.readly-layout::part(navbar) {
+    min-height: 64px;
+    padding: 0 var(--lumo-space-l) 0 var(--lumo-space-s);
+    background: var(--readly-flaeche);
+    border-bottom: 1px solid var(--readly-rahmen);
+    box-shadow: none;
+}
+
+/*Seitenleiste */
+.readly-layout::part(drawer) {
+    background: var(--readly-flaeche);
+    border-right: 1px solid var(--readly-rahmen);
+    width: 280px;
+}
+
+.readly-layout .navigation{
+    display: flex;
+    flex-direction: column;
+    gap: var(--lumo-space-m);
+    min-height: 100%;
+    box-sizing: border-box;
+    padding: var(--lumo-space-l) var(--lumo-space-m);
+}
+
+.readly-layout .seiten-navigation::part(label){
+    font-size: var(--lumo-font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--readly-text-sekundaer);
+}
+
+.readly-layout vaadin-side-nav-item:not([current])::part(content):hover{
+    background: var(--readly-hintergrund);
+}
+
+.readly-layout .admin-navigation{
+    margin-top: auto;
+}
+
+.readly-layout .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--lumo-space-s);
+}
+
+.readly-layout .logo-image {
+    height: 36px;
+}
+
+.readly-layout .logo-text {
+    font-family: var(--readly-schrift-ueberschrift);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--readly-text);
+}
+
+.readly-layout .benutzer-menue {
+    margin-left: auto;
+}
+
+.readly-layout .benutzer-anzeige {
+    display: flex;
+    align-items: center;
+    gap: var(--lumo-space-s);
+    font-weight: 500;
+}
+
+.readly-layout .benutzer-anzeige vaadin-avatar {
+    --vaadin-avatar-size: 32px;
+}
