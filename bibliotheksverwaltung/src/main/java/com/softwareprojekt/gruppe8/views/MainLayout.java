@@ -2,16 +2,12 @@ package com.softwareprojekt.gruppe8.views;
 
 import com.softwareprojekt.gruppe8.data.User;
 import com.softwareprojekt.gruppe8.security.AuthenticatedUser;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.contextmenu.MenuItem;
-import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Footer;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.SvgIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
@@ -34,6 +30,8 @@ import java.util.Optional;
 
 /**
  * The main view is a top-level placeholder for other views.
+ *
+ * @author Niklas Prell
  */
 @Layout
 @AnonymousAllowed
@@ -48,7 +46,7 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
         this.authenticatedUser = authenticatedUser;
         this.accessChecker = accessChecker;
 
-        setPrimarySection(Section.DRAWER);
+        setPrimarySection(Section.NAVBAR);
         addDrawerContent();
         addHeaderContent();
     }
@@ -60,17 +58,11 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
         viewTitle = new H1();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
 
-        addToNavbar(true, toggle, viewTitle);
+        addToNavbar(true, toggle, createLogo(), createUserMenu());
     }
 
     private void addDrawerContent() {
-        Span appName = new Span("My App");
-        appName.addClassNames(LumoUtility.FontWeight.SEMIBOLD, LumoUtility.FontSize.LARGE);
-        Header header = new Header(appName);
-
-        Scroller scroller = new Scroller(createNavigation());
-
-        addToDrawer(header, scroller, createFooter());
+        addToDrawer(new Scroller(createNavigation()));
     }
 
     private SideNav createNavigation() {
@@ -88,7 +80,7 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
         return nav;
     }
 
-    private Footer createFooter() {
+    private Footer createUserMenu() {
         Footer layout = new Footer();
 
         Optional<User> maybeUser = authenticatedUser.get();
@@ -124,6 +116,13 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
         }
 
         return layout;
+    }
+
+    private Component createLogo(){
+        Image logoImage = new Image("icons/logo.png", "Readly Logo");
+        Span logoText = new Span("Readly");
+        Div logoDiv = new Div(logoImage, logoText);
+        return logoDiv;
     }
 
     @Override
