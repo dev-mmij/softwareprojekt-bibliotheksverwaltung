@@ -1,4 +1,4 @@
-package com.softwareprojekt.gruppe8.views;
+package com.softwareprojekt.gruppe8.common.views;
 
 import com.softwareprojekt.gruppe8.data.User;
 import com.softwareprojekt.gruppe8.security.AuthenticatedUser;
