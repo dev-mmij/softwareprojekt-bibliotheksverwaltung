@@ -1,6 +1,7 @@
 package com.softwareprojekt.gruppe8.empfehlung.views;
 
-import com.vaadin.flow.component.dependency.StyleSheet;
+import com.softwareprojekt.gruppe8.empfehlung.service.EmpfehlungService;
+import com.softwareprojekt.gruppe8.empfehlung.service.Empfehlungsdaten;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -9,6 +10,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
+
+import java.util.List;
 
 /**
  * View zum Anzeigen der Empfehlungen (Fuer-Dich)
@@ -22,15 +25,20 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 @RolesAllowed("USER")
 public class EmpfehlungView extends VerticalLayout {
 
-    public EmpfehlungView(){
+    private final EmpfehlungService empfehlungService;
+
+    public EmpfehlungView(EmpfehlungService empfehlungService) {
+        this.empfehlungService = empfehlungService;
         //Ueberschrift
         H2 ueberschrift = new H2("Für dich");
         Paragraph seitenBeschreibung = new Paragraph("Entdecke Bücher, die dir gefallen könnten!");
 
-        //Karte
-        Empfehlungskarte karte = new Empfehlungskarte();
-
         //Hinzufuegen aller Elemente
-        add(ueberschrift, seitenBeschreibung, karte);
+        add(ueberschrift, seitenBeschreibung);
+
+        //Karten
+        List<Empfehlungsdaten> empfehlungen = empfehlungService.ladeNeueEmpfehlungen();
+        empfehlungen.forEach(empfehlungsdatensatz -> add(new Empfehlungskarte(empfehlungsdatensatz)));
+
     }
 }
