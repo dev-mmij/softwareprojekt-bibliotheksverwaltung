@@ -27,7 +27,10 @@ public class EmpfehlungView extends VerticalLayout {
         H2 ueberschrift = new H2("Für dich");
         Paragraph seitenBeschreibung = new Paragraph("Entdecke Bücher, die dir gefallen könnten!");
 
+        //Karte
+        Empfehlungskarte karte = new Empfehlungskarte();
+
         //Hinzufuegen aller Elemente
-        add(ueberschrift, seitenBeschreibung);
+        add(ueberschrift, seitenBeschreibung, karte);
     }
 }
