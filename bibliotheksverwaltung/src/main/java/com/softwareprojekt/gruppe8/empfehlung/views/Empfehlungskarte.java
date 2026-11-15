@@ -6,11 +6,10 @@ import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Empfehlungskarte extends Div {
     public Empfehlungskarte(Empfehlungsdaten empfehlungsdaten) {
+        addClassName("empfehlungskarte");
         Image buchCover = new Image("images/empty-plant.png", "Buch-Cover");
         H4 buchTitel = new H4(empfehlungsdaten.getBuchTitel());
         Paragraph autor = new Paragraph(empfehlungsdaten.getAutor());

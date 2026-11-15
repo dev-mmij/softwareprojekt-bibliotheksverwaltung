@@ -1,0 +1,21 @@
+.empfehlung-view .kartenbereich{
+    width: 100%;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+/* Scrollbar unsichtbar */
+.empfehlung-view .kartenstapel::-webkit-scrollbar {
+    display: none;
+}
+
+.empfehlung-view .empfehlungskarte{
+    height: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

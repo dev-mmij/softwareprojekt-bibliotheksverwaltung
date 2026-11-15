@@ -2,6 +2,8 @@ package com.softwareprojekt.gruppe8.empfehlung.views;
 
 import com.softwareprojekt.gruppe8.empfehlung.service.EmpfehlungService;
 import com.softwareprojekt.gruppe8.empfehlung.service.Empfehlungsdaten;
+import com.vaadin.flow.component.dependency.StyleSheet;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -23,22 +25,28 @@ import java.util.List;
 @Route("fuer-dich")
 @Menu(order = 120, icon = LineAwesomeIconUrl.STAR)
 @RolesAllowed("USER")
+@StyleSheet("styles/empfehlung/empfehlung.css")
 public class EmpfehlungView extends VerticalLayout {
 
     private final EmpfehlungService empfehlungService;
 
     public EmpfehlungView(EmpfehlungService empfehlungService) {
         this.empfehlungService = empfehlungService;
+        setSizeFull();
+        addClassName("empfehlung-view");
+
         //Ueberschrift
         H2 ueberschrift = new H2("Für dich");
         Paragraph seitenBeschreibung = new Paragraph("Entdecke Bücher, die dir gefallen könnten!");
 
-        //Hinzufuegen aller Elemente
-        add(ueberschrift, seitenBeschreibung);
-
         //Karten
+        Div kartenbereich = new Div();
+        kartenbereich.addClassName("kartenbereich");
         List<Empfehlungsdaten> empfehlungen = empfehlungService.ladeNeueEmpfehlungen();
-        empfehlungen.forEach(empfehlungsdatensatz -> add(new Empfehlungskarte(empfehlungsdatensatz)));
+        empfehlungen.forEach(empfehlungsdatensatz -> kartenbereich.add(new Empfehlungskarte(empfehlungsdatensatz)));
 
+        //Hinzufuegen aller Elemente
+        add(ueberschrift, seitenBeschreibung, kartenbereich);
+        setFlexGrow(1, kartenbereich);
     }
 }
