@@ -73,6 +73,24 @@
     gap: var(--lumo-space-s);
 }
 
+.empfehlung-view .exploration-tag {
+    align-items: center;
+    gap: var(--lumo-space-xs);
+    padding: 2px 10px;
+    border-radius: 16px;
+    background: rgba(200, 150, 62, 0.18);
+    color: var(--readly-text);
+    font-size: var(--lumo-font-size-xs);
+    font-weight: 600;
+}
+
+.empfehlung-view .exploration-tag vaadin-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--readly-akzent);
+    margin-right: 2px;
+}
+
 .empfehlung-view .empfehlungskarte .buch-titel{
     margin: 0;
     font-family: var(--readly-schrift-ueberschrift);
@@ -114,4 +132,31 @@
     width: 100%;
     align-items: center;
     justify-content: space-between;
+}
+.empfehlung-view .button-leiste{
+    gap: var(--lumo-space-s);
+}
+.empfehlung-view .bewerte-button {
+    width: 44px;
+    height: 44px;
+    min-width: 0;
+    padding: 0;
+    border-radius: 10px;
+    border: 1px solid var(--readly-rahmen);
+    background: var(--readly-flaeche);
+    color: var(--readly-text-sekundaer);
+    cursor: pointer;
+}
+.empfehlung-view .bewerte-button:hover {
+    background: var(--readly-hintergrund);
+}
+.empfehlung-view .daumen-hoch.ausgewaehlt {
+    background: var(--readly-primaer);
+    border-color: var(--readly-primaer);
+    color: white;
+}
+.empfehlung-view .daumen-runter.ausgewaehlt {
+    background: var(--readly-text);
+    border-color: var(--readly-text);
+    color: white;
 }
