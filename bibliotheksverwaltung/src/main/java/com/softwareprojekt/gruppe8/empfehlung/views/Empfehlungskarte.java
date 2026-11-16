@@ -8,6 +8,11 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
+/**
+ * Klasse zur Kapselung der grafischen Darstellung einer Empfehlung
+ *
+ * @author Niklas Prell
+ */
 
 public class Empfehlungskarte extends Div {
     public Empfehlungskarte(Empfehlungsdaten empfehlungsdaten) {
