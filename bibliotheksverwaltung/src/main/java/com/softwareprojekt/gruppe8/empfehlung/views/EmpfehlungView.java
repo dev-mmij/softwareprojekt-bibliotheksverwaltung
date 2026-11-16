@@ -37,7 +37,9 @@ public class EmpfehlungView extends VerticalLayout {
 
         //Ueberschrift
         H2 ueberschrift = new H2("Für dich");
+        ueberschrift.addClassName("seiten-titel");
         Paragraph seitenBeschreibung = new Paragraph("Entdecke Bücher, die dir gefallen könnten!");
+        seitenBeschreibung.addClassName("seiten-beschreibung");
 
         //Karten
         Div kartenbereich = new Div();

@@ -8,7 +8,7 @@
 
 .empfehlungsparameter-view .seiten-titel {
     margin: 0;
-    font-family: "Fraunces", Georgia, serif;
+    font-family: var(--readly-schrift-ueberschrift);
     font-size: 2rem;
     font-weight: 600;
 }
