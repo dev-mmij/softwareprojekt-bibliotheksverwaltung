@@ -1,6 +1,7 @@
 package com.softwareprojekt.gruppe8.common.views;
 
-import com.softwareprojekt.gruppe8.data.User;
+import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.Profil;
 import com.softwareprojekt.gruppe8.security.AuthenticatedUser;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -106,11 +107,23 @@ public class MainLayout extends AppLayout{
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
 
-            Avatar avatar = new Avatar(user.getName());
-            DownloadHandler imageHandler = DownloadHandler
-                    .fromInputStream(event -> new DownloadResponse(new ByteArrayInputStream(user.getProfilePicture()),
-                            "profile-pic", "image/jpeg", -1));
-            avatar.setImageHandler(imageHandler);
+            Avatar avatar = new Avatar(user.getUsername());
+            byte[] profilbild = user.getProfil() != null
+                    ? user.getProfil().getProfilbild()
+                    : null;
+
+            if (profilbild != null && profilbild.length > 0) {
+                DownloadHandler imageHandler = DownloadHandler.fromInputStream(
+                        event -> new DownloadResponse(
+                                new ByteArrayInputStream(profilbild),
+                                "profile-pic",
+                                "image/jpeg",
+                                profilbild.length
+                        )
+                );
+
+                avatar.setImageHandler(imageHandler);
+            }
             avatar.getElement().setAttribute("tabindex", "-1");
 
             MenuBar userMenu = new MenuBar();
@@ -119,7 +132,7 @@ public class MainLayout extends AppLayout{
             MenuItem userName = userMenu.addItem("");
             Div div = new Div();
             div.add(avatar);
-            div.add(user.getName());
+            div.add(user.getUsername());
             div.add(new Icon("lumo", "dropdown"));
             div.addClassName("benutzer-anzeige");
             userName.add(div);
