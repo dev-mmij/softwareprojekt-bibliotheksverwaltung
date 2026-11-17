@@ -18,9 +18,11 @@ import jakarta.annotation.security.PermitAll;
 
 import java.util.stream.Collectors;
 
+import org.vaadin.lineawesome.LineAwesomeIconUrl;
+
 @PageTitle("Buchkatalog")
 @Route(value = "katalog", layout = MainLayout.class) // Falls ihr ein MainLayout nutzt, hier layout = MainLayout.class ergänzen
-@Menu(title = "Suche", order = 4) // Falls ihr ein Menü nutzt, hier die Menüeinträge ergänzen
+@Menu(title = "Büchersuche", order = 4, icon = LineAwesomeIconUrl.SEARCH_SOLID) // Falls ihr ein Menü nutzt, hier die Menüeinträge ergänzen
 @PermitAll
 public class KatalogView extends VerticalLayout {
 
