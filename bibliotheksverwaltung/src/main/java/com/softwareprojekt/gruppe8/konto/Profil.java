@@ -7,7 +7,7 @@ package com.softwareprojekt.gruppe8.konto;
 public class Profil {
 
     private Long profilId;
-    private String profilbild;
+    private byte[] profilbild;
     private String anzeigename;
     private String vorname;
     private String nachname;
@@ -17,7 +17,7 @@ public class Profil {
     public Profil() {
     }
 
-    public Profil(Long profilId, String profilbild, String anzeigename,
+    public Profil(Long profilId, byte[] profilbild, String anzeigename,
                   String vorname, String nachname, String kurzeBio,
                   String standort) {
         this.profilId = profilId;
@@ -33,15 +33,11 @@ public class Profil {
         return profilId;
     }
 
-    public void setProfilId(Long profilId) {
-        this.profilId = profilId;
-    }
-
-    public String getProfilbild() {
+    public byte[] getProfilbild() {
         return profilbild;
     }
 
-    public void setProfilbild(String profilbild) {
+    public void setProfilbild(byte[] profilbild) {
         this.profilbild = profilbild;
     }
 

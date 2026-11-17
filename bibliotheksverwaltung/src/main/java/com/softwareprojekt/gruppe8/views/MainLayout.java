@@ -1,6 +1,6 @@
 package com.softwareprojekt.gruppe8.views;
 
-import com.softwareprojekt.gruppe8.data.User;
+import com.softwareprojekt.gruppe8.konto.User;
 import com.softwareprojekt.gruppe8.security.AuthenticatedUser;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -95,7 +95,7 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
 
-            Avatar avatar = new Avatar(user.getName());
+            Avatar avatar = new Avatar(user.getEMail());
             DownloadHandler imageHandler = DownloadHandler
                     .fromInputStream(event -> new DownloadResponse(new ByteArrayInputStream(user.getProfilePicture()),
                             "profile-pic", "image/jpeg", -1));
@@ -109,7 +109,7 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
             MenuItem userName = userMenu.addItem("");
             Div div = new Div();
             div.add(avatar);
-            div.add(user.getName());
+            div.add(user.getEMail());
             div.add(new Icon("lumo", "dropdown"));
             div.addClassNames(LumoUtility.Display.FLEX, LumoUtility.AlignItems.CENTER, LumoUtility.Gap.SMALL);
             userName.add(div);

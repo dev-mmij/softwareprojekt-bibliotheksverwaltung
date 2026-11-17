@@ -1,6 +1,7 @@
-package com.softwareprojekt.gruppe8.data;
+package com.softwareprojekt.gruppe8.konto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softwareprojekt.gruppe8.data.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -16,7 +17,7 @@ import java.util.Set;
 public class User extends AbstractEntity {
 
     private String username;
-    private String name;
+    private String EMail;
     @JsonIgnore
     private String hashedPassword;
     @Enumerated(EnumType.STRING)
@@ -32,11 +33,11 @@ public class User extends AbstractEntity {
     public void setUsername(String username) {
         this.username = username;
     }
-    public String getName() {
-        return name;
+    public String getEMail() {
+        return EMail;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setEMail(String EMail) {
+        this.EMail = EMail;
     }
     public String getHashedPassword() {
         return hashedPassword;
@@ -50,11 +51,4 @@ public class User extends AbstractEntity {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-    public byte[] getProfilePicture() {
-        return profilePicture;
-    }
-    public void setProfilePicture(byte[] profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
 }
