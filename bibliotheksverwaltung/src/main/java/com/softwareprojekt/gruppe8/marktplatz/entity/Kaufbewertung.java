@@ -10,7 +10,7 @@ public class Kaufbewertung {
     @Column(name = "kaufbewertung_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name = "kauf_id", nullable = false, unique = true)
     private Kauf kauf;
 

@@ -8,5 +8,5 @@ import java.util.List;
 
 
 public interface KaufRepository extends JpaRepository<Kauf, Long> {
-    List<Kauf> findByKaeuferId(User kaeuferId);
+    List<Kauf> findByKaeufer(User kaeufer);
 }

@@ -16,11 +16,11 @@ public class Kauf {
         PayPal, Überweisung, BarzahlungBeiAbholung
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "kaeufer_id", nullable = false)
     private User kaeufer;
 
-    @OneToOne (fetch = FetchType.LAZY, optional = false)
+    @OneToOne (optional = false)
     @JoinColumn(name = "angebot_id", nullable = false, unique = true)
     private Angebot angebot;
 

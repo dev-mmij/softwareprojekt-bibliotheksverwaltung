@@ -9,6 +9,6 @@ public interface AngebotRepository extends JpaRepository<Angebot, Long> {
 
     List<Angebot> findByStatus(Angebot.Status status);  
 
-    List<Angebot> findByVerkaeuferId(User verkaeuferId);
+    List<Angebot> findByVerkaeufer(User verkaeufer);
     
 }

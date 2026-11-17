@@ -23,11 +23,11 @@ public class Angebot {
         Aktiv, Verkauft, Reserviert
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "verkaeufer_id", nullable = false)
     private User verkaeufer;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "buch_id", nullable = false)
     private Buch buch;
     
