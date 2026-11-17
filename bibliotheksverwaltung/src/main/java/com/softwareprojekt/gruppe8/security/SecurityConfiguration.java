@@ -25,6 +25,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain vaadinSecurityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/images/*.png", "/*.css").permitAll());
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/icons/**").permitAll());
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/styles/**").permitAll());
 
         // Icons from the line-awesome addon
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/line-awesome/**").permitAll());

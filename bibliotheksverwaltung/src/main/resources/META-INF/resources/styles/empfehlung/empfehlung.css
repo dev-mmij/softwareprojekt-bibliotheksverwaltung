@@ -1,0 +1,162 @@
+.empfehlung-view{
+    padding: var(--lumo-space-l) var(--lumo-space-xl);
+    gap: var(--lumo-space-m);
+}
+
+.empfehlung-view .kartenbereich{
+    width: 100%;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+/* Scrollbar unsichtbar */
+.empfehlung-view .kartenbereich::-webkit-scrollbar {
+    display: none;
+}
+
+.empfehlung-view .seiten-titel{
+    margin: 0;
+    font-family: var(--readly-schrift-ueberschrift);
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.empfehlung-view .seiten-beschreibung{
+    margin: 0;
+    color: var(--readly-text-sekundaer);
+}
+
+.empfehlung-view .empfehlungskarte{
+    height: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--lumo-space-m) 0 110px 0;
+    box-sizing: border-box;
+}
+
+.empfehlung-view .empfehlungskarte .karten-inhalt {
+    background: var(--readly-flaeche);
+    border-radius: 16px;
+    border: 1px solid var(--readly-rahmen);
+    width: 100%;
+    max-width: 1100px;
+    height: 560px;
+    max-height: 100%;
+    padding: 0;
+    gap: 0;
+    align-items: stretch;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(43, 36, 32, 0.08);
+}
+
+.empfehlung-view .empfehlungskarte .buch-cover{
+    height: 100%;
+    aspect-ratio: 2 / 3;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+    background: var(--lumo-primary-color-10pct);
+    border-right: 1px solid var(--readly-rahmen);
+}
+
+.empfehlung-view .empfehlungskarte .buch-details{
+    flex: 1;
+    min-width: 0;
+    padding: var(--lumo-space-l) var(--lumo-space-l) var(--lumo-space-m);
+    gap: var(--lumo-space-s);
+}
+
+.empfehlung-view .exploration-tag {
+    align-items: center;
+    gap: var(--lumo-space-xs);
+    padding: 2px 10px;
+    border-radius: 16px;
+    background: rgba(200, 150, 62, 0.18);
+    color: var(--readly-text);
+    font-size: var(--lumo-font-size-xs);
+    font-weight: 600;
+}
+
+.empfehlung-view .exploration-tag vaadin-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--readly-akzent);
+    margin-right: 2px;
+}
+
+.empfehlung-view .empfehlungskarte .buch-titel{
+    margin: 0;
+    font-family: var(--readly-schrift-ueberschrift);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+.empfehlung-view .empfehlungskarte .buch-autor{
+    margin: 0;
+    color: var(--readly-text-sekundaer);
+}
+.empfehlung-view .empfehlungskarte .genre-leiste{
+    gap: var(--lumo-space-s);
+    flex-wrap: wrap;
+}
+.empfehlung-view .empfehlungskarte .buch-genre{
+    padding: 2px 10px;
+    background: var(--lumo-primary-color-10pct);
+    border-radius: 16px;
+    font-size: var(--lumo-font-size-s);
+}
+.empfehlung-view .empfehlungskarte .grund{
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--lumo-space-s);
+    padding: var(--lumo-space-m);
+    background: var(--readly-hintergrund);
+    font-size: var(--lumo-font-size-s);
+    border-radius: 8px;
+}
+.empfehlung-view .passung-frage{
+    font-size: var(--lumo-font-size-s);
+    color: var(--readly-text-sekundaer);
+}
+.empfehlung-view .passung-leiste{
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+.empfehlung-view .button-leiste{
+    gap: var(--lumo-space-s);
+}
+.empfehlung-view .bewerte-button {
+    width: 44px;
+    height: 44px;
+    min-width: 0;
+    padding: 0;
+    border-radius: 10px;
+    border: 1px solid var(--readly-rahmen);
+    background: var(--readly-flaeche);
+    color: var(--readly-text-sekundaer);
+    cursor: pointer;
+}
+.empfehlung-view .bewerte-button:hover {
+    background: var(--readly-hintergrund);
+}
+.empfehlung-view .daumen-hoch.ausgewaehlt {
+    background: var(--readly-primaer);
+    border-color: var(--readly-primaer);
+    color: white;
+}
+.empfehlung-view .daumen-runter.ausgewaehlt {
+    background: var(--readly-text);
+    border-color: var(--readly-text);
+    color: white;
+}
