@@ -3,7 +3,7 @@ package com.softwareprojekt.gruppe8.bewertung.service;
 import java.util.Optional;
 import com.softwareprojekt.gruppe8.bewertung.entity.Rating;
 import com.softwareprojekt.gruppe8.bewertung.repository.RatingRepository;
-import com.softwareprojekt.gruppe8.data.User;
+import com.softwareprojekt.gruppe8.konto.User;
 import com.softwareprojekt.gruppe8.katalog.entity.Buch;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
