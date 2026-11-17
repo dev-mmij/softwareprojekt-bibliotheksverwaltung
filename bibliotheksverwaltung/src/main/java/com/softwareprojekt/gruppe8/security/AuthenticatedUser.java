@@ -1,6 +1,6 @@
 package com.softwareprojekt.gruppe8.security;
 
-import com.softwareprojekt.gruppe8.data.User;
+import com.softwareprojekt.gruppe8.konto.User;
 import com.softwareprojekt.gruppe8.data.UserRepository;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import java.util.Optional;
