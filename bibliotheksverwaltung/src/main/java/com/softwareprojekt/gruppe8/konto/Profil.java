@@ -1,26 +1,50 @@
 package com.softwareprojekt.gruppe8.konto;
 
-/**
- * Repräsentiert das Profil eines authenticated Nutzers.
- */
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "profil")
 public class Profil {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "profil_id")
     private Long profilId;
+
+    @Lob
+    @Column(name = "profilbild")
     private byte[] profilbild;
+
+    @Column(name = "anzeigename")
     private String anzeigename;
+
+    @Column(name = "vorname")
     private String vorname;
+
+    @Column(name = "nachname")
     private String nachname;
+
+    @Column(name = "kurze_bio", length = 1000)
     private String kurzeBio;
+
+    @Column(name = "standort")
     private String standort;
 
-    public Profil() {
+    /**
+     * Wird von JPA benötigt.
+     */
+    protected Profil() {
     }
 
-    public Profil(Long profilId, byte[] profilbild, String anzeigename,
+    public Profil(byte[] profilbild, String anzeigename,
                   String vorname, String nachname, String kurzeBio,
                   String standort) {
-        this.profilId = profilId;
         this.profilbild = profilbild;
         this.anzeigename = anzeigename;
         this.vorname = vorname;

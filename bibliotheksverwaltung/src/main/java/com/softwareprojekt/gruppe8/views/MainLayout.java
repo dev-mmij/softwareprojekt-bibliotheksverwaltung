@@ -1,6 +1,7 @@
 package com.softwareprojekt.gruppe8.views;
 
 import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.Profil;
 import com.softwareprojekt.gruppe8.security.AuthenticatedUser;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -96,10 +97,22 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
             User user = maybeUser.get();
 
             Avatar avatar = new Avatar(user.getEMail());
-            DownloadHandler imageHandler = DownloadHandler
-                    .fromInputStream(event -> new DownloadResponse(new ByteArrayInputStream(user.getProfilePicture()),
-                            "profile-pic", "image/jpeg", -1));
-            avatar.setImageHandler(imageHandler);
+            Profil profil = user.getProfil();
+
+            if (profil != null && profil.getProfilbild() != null) {
+                byte[] bild = profil.getProfilbild();
+
+                DownloadHandler imageHandler = DownloadHandler.fromInputStream(
+                        event -> new DownloadResponse(
+                                new ByteArrayInputStream(bild),
+                                "profile-pic.jpg",
+                                "image/jpeg",
+                                bild.length
+                        )
+                );
+
+                avatar.setImageHandler(imageHandler);
+            }
             avatar.setThemeName("xsmall");
             avatar.getElement().setAttribute("tabindex", "-1");
 
