@@ -1,17 +1,37 @@
 package com.softwareprojekt.gruppe8.bibliothek.entity;
 
-import jakarta.persistence.*;
+import com.softwareprojekt.gruppe8.konto.User;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "regal")
+@Table(name = "regal",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"benutzer_id", "name"}))
 public class Regal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "regal_id")
     private Long id;
+
+    // Beziehung "legt an" (User 1:n Regal)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "benutzer_id", nullable = false)
+    private User benutzer;
 
     @Column(nullable = false)
     private String name;
@@ -21,9 +41,7 @@ public class Regal {
     @Column(name = "erstellt_am", nullable = false)
     private LocalDate erstelltAm;
 
-    // TODO: benutzer (User), sobald User in konto liegt
-
-    // NEU: Beziehung "enthaelt" (Regal m:n Bibliothekseintrag)
+    // Beziehung "enthaelt" (Regal m:n Bibliothekseintrag)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "regal_eintrag",
@@ -36,6 +54,10 @@ public class Regal {
 
     // Getter & Setter
     public Long getId() { return id; }
+
+    public User getBenutzer() { return benutzer; }
+
+    public void setBenutzer(User benutzer) { this.benutzer = benutzer; }
 
     public String getName() { return name; }
 

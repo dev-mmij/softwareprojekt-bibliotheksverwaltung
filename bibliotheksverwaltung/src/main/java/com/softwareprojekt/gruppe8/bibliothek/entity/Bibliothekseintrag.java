@@ -1,14 +1,25 @@
 package com.softwareprojekt.gruppe8.bibliothek.entity;
 
 import com.softwareprojekt.gruppe8.katalog.entity.Buch;
-import jakarta.persistence.*;
+import com.softwareprojekt.gruppe8.konto.User;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "bibliothekseintrag")
-// TODO: sobald benutzer da ist, Unique-Constraint ergaenzen:
-// @Table(name = "bibliothekseintrag",
-//        uniqueConstraints = @UniqueConstraint(columnNames = {"benutzer_id", "buch_id"}))
+@Table(name = "bibliothekseintrag",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"benutzer_id", "buch_id"}))
 public class Bibliothekseintrag {
 
     @Id
@@ -16,8 +27,12 @@ public class Bibliothekseintrag {
     @Column(name = "eintrag_id")
     private Long id;
 
-    // TODO: benutzer (User), sobald User in konto liegt
+    // Beziehung "fuehrt" (User 1:n Bibliothekseintrag)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "benutzer_id", nullable = false)
+    private User benutzer;
 
+    // Beziehung "verweist auf" (Bibliothekseintrag n:1 Buch)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "buch_id", nullable = false)
     private Buch buch;
@@ -42,6 +57,10 @@ public class Bibliothekseintrag {
 
     // Getter & Setter
     public Long getId() { return id; }
+
+    public User getBenutzer() { return benutzer; }
+
+    public void setBenutzer(User benutzer) { this.benutzer = benutzer; }
 
     public Buch getBuch() { return buch; }
 
