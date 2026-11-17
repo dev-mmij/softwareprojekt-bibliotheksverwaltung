@@ -1,5 +1,6 @@
 package com.softwareprojekt.gruppe8.katalog.views;
 
+import com.softwareprojekt.gruppe8.common.views.MainLayout;
 import com.softwareprojekt.gruppe8.katalog.entity.Autor;
 import com.softwareprojekt.gruppe8.katalog.entity.Buch;
 import com.softwareprojekt.gruppe8.katalog.entity.Genre;
@@ -10,6 +11,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
@@ -17,7 +19,8 @@ import jakarta.annotation.security.PermitAll;
 import java.util.stream.Collectors;
 
 @PageTitle("Buchkatalog")
-@Route(value = "katalog") // Falls ihr ein MainLayout nutzt, hier layout = MainLayout.class ergänzen
+@Route(value = "katalog", layout = MainLayout.class) // Falls ihr ein MainLayout nutzt, hier layout = MainLayout.class ergänzen
+@Menu(title = "Suche", order = 4) // Falls ihr ein Menü nutzt, hier die Menüeinträge ergänzen
 @PermitAll
 public class KatalogView extends VerticalLayout {
 
@@ -33,7 +36,7 @@ public class KatalogView extends VerticalLayout {
         configureGrid();
 
         add(
-            new H2("Bibliothekskatalog"),
+            new H2("Büchersuche"),
             new HorizontalLayout(filterText),
             grid
         );
