@@ -10,4 +10,7 @@ import com.softwareprojekt.gruppe8.empfehlung.domain.Feedback;
  * @author Niklas Prell
  */
 public record VerlaufEintrag(Long buchId, int position, Feedback feedback) {
+    public boolean istNeuerAls(VerlaufEintrag andererEintrag){
+        return position > andererEintrag.position;
+    }
 }
