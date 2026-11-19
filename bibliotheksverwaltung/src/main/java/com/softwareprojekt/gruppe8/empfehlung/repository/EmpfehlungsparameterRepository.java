@@ -4,6 +4,7 @@ import com.softwareprojekt.gruppe8.empfehlung.domain.Empfehlungsparameter;
 import com.softwareprojekt.gruppe8.empfehlung.domain.EmpfehlungsparameterDefinition;
 import org.springframework.data.repository.ListCrudRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,4 +14,5 @@ import java.util.Optional;
 
 public interface EmpfehlungsparameterRepository extends ListCrudRepository<Empfehlungsparameter, Long> {
     Optional<Empfehlungsparameter> findByDefinition(EmpfehlungsparameterDefinition definition);
+    List<Empfehlungsparameter> findAllByOrderByDefinitionAsc();
 }

@@ -5,11 +5,8 @@ import com.softwareprojekt.gruppe8.empfehlung.domain.EmpfehlungsparameterDefinit
 import com.softwareprojekt.gruppe8.empfehlung.repository.EmpfehlungsparameterRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class EmpfehlungsparameterService {
@@ -21,9 +18,7 @@ public class EmpfehlungsparameterService {
     }
 
     public List<Empfehlungsparameter> getEmpfehlungsparameter(){
-        return empfehlungsparameterRepository.findAll().stream()
-                .sorted(Comparator.comparing(Empfehlungsparameter::getDefinition))
-                .collect(Collectors.toList());
+        return empfehlungsparameterRepository.findAllByOrderByDefinitionAsc();
     }
 
     @Transactional
