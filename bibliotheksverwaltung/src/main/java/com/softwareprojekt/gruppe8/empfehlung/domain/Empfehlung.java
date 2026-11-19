@@ -1,6 +1,7 @@
 package com.softwareprojekt.gruppe8.empfehlung.domain;
 
 import com.softwareprojekt.gruppe8.katalog.entity.Buch;
+import com.softwareprojekt.gruppe8.konto.User;
 import jakarta.persistence.*;
 
 
@@ -11,13 +12,16 @@ import jakarta.persistence.*;
  * @author Niklas Prell
  */
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"benutzer_id", "position"}))
 public class Empfehlung {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empfehlungId;
 
-    //TODO: Benutzer hinzufuegen (auch im Konstruktur, Feld und @UniqueConstraint auf benutzer_id + position
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "benutzer_id", nullable = false)
+    private User benutzer;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "buch_id", nullable = false)
@@ -44,7 +48,8 @@ public class Empfehlung {
         super();
     }
 
-    public Empfehlung(Buch buch, String grund, double score, int position, boolean istExploration) {
+    public Empfehlung(User benutzer, Buch buch, String grund, double score, int position, boolean istExploration) {
+        this.benutzer = benutzer;
         this.buch = buch;
         this.grund = grund;
         this.feedback = Feedback.NICHT_BEWERTET;
@@ -55,6 +60,10 @@ public class Empfehlung {
 
     public Long getEmpfehlungId() {
         return empfehlungId;
+    }
+
+    public User getBenutzer() {
+        return benutzer;
     }
 
     public Buch getBuch() {
