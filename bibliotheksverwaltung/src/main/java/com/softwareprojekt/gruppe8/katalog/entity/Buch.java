@@ -43,7 +43,7 @@ public class Buch {
 
     public Buch() {}
 
-    // Getter & Setter
+    // Getter & Setter (evtl. doch setID())
     public Long getId() {
         return id;
     }
