@@ -1,7 +1,7 @@
 package com.softwareprojekt.gruppe8.bibliothek.repository;
 
 import com.softwareprojekt.gruppe8.bibliothek.entity.Regal;
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

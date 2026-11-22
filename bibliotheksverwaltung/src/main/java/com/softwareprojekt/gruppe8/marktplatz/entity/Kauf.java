@@ -1,5 +1,5 @@
 package com.softwareprojekt.gruppe8.marktplatz.entity;
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 

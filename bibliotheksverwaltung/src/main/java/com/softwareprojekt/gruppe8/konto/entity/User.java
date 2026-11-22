@@ -1,4 +1,4 @@
-package com.softwareprojekt.gruppe8.konto;
+package com.softwareprojekt.gruppe8.konto.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softwareprojekt.gruppe8.data.AbstractEntity;
@@ -24,7 +24,7 @@ public class User extends AbstractEntity {
     private String hashedPassword;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     private Set<RoleType> roles;
 
     @OneToOne(

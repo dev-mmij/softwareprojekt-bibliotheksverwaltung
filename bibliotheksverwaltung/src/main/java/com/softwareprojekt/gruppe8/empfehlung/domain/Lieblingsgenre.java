@@ -1,7 +1,7 @@
 package com.softwareprojekt.gruppe8.empfehlung.domain;
 
 import com.softwareprojekt.gruppe8.katalog.entity.Genre;
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import jakarta.persistence.*;
 
 /**

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import com.softwareprojekt.gruppe8.data.UserRepository;
 
 @Service
