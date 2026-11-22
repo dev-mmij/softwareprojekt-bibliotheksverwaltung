@@ -12,48 +12,54 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit-Tests fuer das Interessenprofil zur Berechnung der Gewichte aus Genres und Autoren sowie vorherigen
+ * Empfehlungen
+ *
+ * @author Niklas Prell
+ */
 class InteressenprofilTest {
     //Autorentestdaten
-    final Long jkRowling = 10L, king = 11L, collins = 12L, tolkien = 13L, mcFadden = 14L;
+    private static final Long JK_ROWLING = 10L, KING = 11L, COLLINS = 12L, TOLKIEN = 13L, MCFADDEN = 14L;
 
     //Buechertestdaten
-    final Long esId = 100L, hobbitId = 101L, hungerGamesId = 102L, harryPotterId = 104L, wennSieWuessteId = 105L, leeresBuchId = 105L;
+    private static final Long ES_ID = 100L, HOBBIT_ID = 101L, HUNGER_GAMES_ID = 102L, HARRY_POTTER_ID = 104L, WENN_SIE_WUESSTE_ID = 105L, LEERES_BUCH_ID = 106L;
 
     //Genretestdaten
-    final Long fantasy = 1L, krimi = 2L, abenteuer = 3L, horror = 4L, thriller = 5L, dystopie = 6L;
+    private static final Long FANTASY = 1L, KRIMI = 2L, ABENTEUER = 3L, HORROR = 4L, THRILLER = 5L, DYSTOPIE = 6L;
 
     //BuchInfos
-    BuchInfo hobbit;
-    BuchInfo es;
-    BuchInfo hungerGames;
-    BuchInfo harryPotter;
-    BuchInfo wennSieWuesste;
-    BuchInfo leeresBuch;
+    private BuchInfo hobbit;
+    private BuchInfo es;
+    private BuchInfo hungerGames;
+    private BuchInfo harryPotter;
+    private BuchInfo wennSieWuesste;
+    private BuchInfo leeresBuch;
 
     //Interessensprofil
-    Interessenprofil profil;
-    Interessenprofil begrenztesProfil;
+    private Interessenprofil profil;
+    private Interessenprofil begrenztesProfil;
 
     @BeforeEach
     void setUp() {
         //Daten vorbereiten
-        hobbit = new BuchInfo(hobbitId, "Der Hobbit", Map.of(fantasy, "Fantasy", abenteuer, "Abenteuer"),
-                Map.of(tolkien, "Tolkien"));
-        es = new BuchInfo(esId, "ES", Map.of(horror, "Horror"), Map.of(king, "King"));
-        hungerGames = new BuchInfo(hungerGamesId, "Die Tribute von Panem", Map.of(fantasy, "Fantasy", dystopie, "Dystopie"),
-                Map.of(collins, "Collins"));
-        harryPotter = new BuchInfo(harryPotterId, "Harry Potter", Map.of(fantasy, "Fantasy"), Map.of(jkRowling, "J.K Rowling"));
-        wennSieWuesste = new BuchInfo(wennSieWuessteId, "Wenn Sie wuesste", Map.of(thriller, "Thriller"), Map.of(mcFadden, "McFadden"));
-        leeresBuch = new BuchInfo(leeresBuchId, "", Map.of(), Map.of());
+        hobbit = new BuchInfo(HOBBIT_ID, "Der Hobbit", Map.of(FANTASY, "Fantasy", ABENTEUER, "Abenteuer"),
+                Map.of(TOLKIEN, "Tolkien"));
+        es = new BuchInfo(ES_ID, "ES", Map.of(HORROR, "Horror"), Map.of(KING, "King"));
+        hungerGames = new BuchInfo(HUNGER_GAMES_ID, "Die Tribute von Panem", Map.of(FANTASY, "Fantasy", DYSTOPIE, "Dystopie"),
+                Map.of(COLLINS, "Collins"));
+        harryPotter = new BuchInfo(HARRY_POTTER_ID, "Harry Potter", Map.of(FANTASY, "Fantasy"), Map.of(JK_ROWLING, "J.K Rowling"));
+        wennSieWuesste = new BuchInfo(WENN_SIE_WUESSTE_ID, "Wenn Sie wuesste", Map.of(THRILLER, "Thriller"), Map.of(MCFADDEN, "McFadden"));
+        leeresBuch = new BuchInfo(LEERES_BUCH_ID, "", Map.of(), Map.of());
 
         //Vorherige Bewertungen
         List<VerlaufEintrag> verlaufEintraege = List.of(
-                new VerlaufEintrag(hobbitId, 1, Feedback.LIKE),
-                new VerlaufEintrag(esId, 2, Feedback.DISLIKE));
+                new VerlaufEintrag(HOBBIT_ID, 1, Feedback.LIKE),
+                new VerlaufEintrag(ES_ID, 2, Feedback.DISLIKE));
 
         AlgorithmusInput input = new AlgorithmusInput(
-                List.of(hobbit, es, hungerGames, harryPotter), verlaufEintraege, Set.of(fantasy, dystopie),
-                Set.of(collins, tolkien), Set.of(), 3);
+                List.of(hobbit, es, hungerGames, harryPotter), verlaufEintraege, Set.of(FANTASY, DYSTOPIE),
+                Set.of(COLLINS, TOLKIEN), Set.of(), 3);
 
         Map<EmpfehlungsparameterDefinition, Double> parameterWerte = new HashMap<>(Map.of(
                 EmpfehlungsparameterDefinition.STARTWERT_LIEBLINGSGENRE, 0.5,
@@ -74,16 +80,16 @@ class InteressenprofilTest {
     }
     @Test
     void berechnetGewichteAusLieblingsgenresFeedbackUndGefolgtenAutoren() {
-        assertEquals(0.7, profil.getGenreGewicht(fantasy));
-        assertEquals(0.2, profil.getGenreGewicht(abenteuer));
-        assertEquals(-0.2, profil.getGenreGewicht(horror));
-        assertEquals(0.5, profil.getGenreGewicht(dystopie));
-        assertEquals(0.0, profil.getGenreGewicht(krimi));
-        assertEquals(0.0, profil.getGenreGewicht(thriller));
-        assertEquals(-0.2, profil.getAutorGewicht(king));
-        assertEquals(0.5, profil.getAutorGewicht(collins));
-        assertEquals(0.7, profil.getAutorGewicht(tolkien));
-        assertEquals(0.0, profil.getAutorGewicht(jkRowling));
+        assertEquals(0.7, profil.getGenreGewicht(FANTASY));
+        assertEquals(0.2, profil.getGenreGewicht(ABENTEUER));
+        assertEquals(-0.2, profil.getGenreGewicht(HORROR));
+        assertEquals(0.5, profil.getGenreGewicht(DYSTOPIE));
+        assertEquals(0.0, profil.getGenreGewicht(KRIMI));
+        assertEquals(0.0, profil.getGenreGewicht(THRILLER));
+        assertEquals(-0.2, profil.getAutorGewicht(KING));
+        assertEquals(0.5, profil.getAutorGewicht(COLLINS));
+        assertEquals(0.7, profil.getAutorGewicht(TOLKIEN));
+        assertEquals(0.0, profil.getAutorGewicht(JK_ROWLING));
     }
 
     @Test
@@ -112,7 +118,13 @@ class InteressenprofilTest {
 
     @Test
     void speichertObereGewichtGrenzeFuerGenreOderAutorWennDieGrenzeUeberschrittenWird() {
-        assertEquals(0.5, begrenztesProfil.getGenreGewicht(fantasy));
-        assertEquals(0.5, begrenztesProfil.getAutorGewicht(tolkien));
+        assertEquals(0.5, begrenztesProfil.getGenreGewicht(FANTASY));
+        assertEquals(0.5, begrenztesProfil.getAutorGewicht(TOLKIEN));
+    }
+
+    @Test
+    void speichertNormalesGewichtAuchBeiStaerkererBegrenzung() {
+        assertEquals(0.2, begrenztesProfil.getGenreGewicht(ABENTEUER));
+        assertEquals(0.5, begrenztesProfil.getAutorGewicht(COLLINS));
     }
 }
