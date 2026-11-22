@@ -8,6 +8,6 @@ package com.softwareprojekt.gruppe8.empfehlung.algorithmus;
  * @author Niklas Prell
  */
 
-public record Kandidat(BuchInfo buch, Kandidatenklasse klasse) {
+public record Kandidat(BuchInfo buch, Kandidatenklasse klasse, double empfehlungScore) {
 
 }
