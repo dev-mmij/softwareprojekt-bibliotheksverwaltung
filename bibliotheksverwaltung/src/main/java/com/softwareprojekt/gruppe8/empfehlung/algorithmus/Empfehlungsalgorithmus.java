@@ -1,0 +1,57 @@
+package com.softwareprojekt.gruppe8.empfehlung.algorithmus;
+
+import com.softwareprojekt.gruppe8.empfehlung.domain.EmpfehlungsparameterDefinition;
+import com.softwareprojekt.gruppe8.empfehlung.domain.Feedback;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class Empfehlungsalgorithmus {
+    private final int KARTEN_PRO_RUNDE = 10;
+
+    /**
+     * Bestimmt alle Buecher, die in die fuer die Empfehlungsgenerierung infrage kommen können.
+     * Ausgeschlossene und nicht gemochte Buecher fallen weg. Kuerzlich empfohlene Buecher
+     * kommen nur dazu, wenn sonst nicht genug Kandidaten für eine Runde da sind.
+     *
+     * @param input     alle Buecher und ausgeschlossenen Buch-IDs
+     * @param verlauf   bisherige Empfehlungen mit Feedback
+     * @param parameter aktuelle Werte der Empfehlungsparameter
+     * @return Kandidaten mit ihrer Klasse, leer wenn keine Bücher mehr infrage kommen
+     */
+    private List<Kandidat> bestimmeKandidaten(AlgorithmusInput input, Verlauf verlauf, Map<EmpfehlungsparameterDefinition, Double> parameter) {
+        List<Kandidat> kandidaten = new ArrayList<>();
+        List<Kandidat> eventuelleKandidaten = new ArrayList<>();
+        int mindestabstand = parameter.get(EmpfehlungsparameterDefinition.MINDESTABSTAND_WIEDERHOLUNG).intValue();
+        for (BuchInfo buch : input.alleBuecher()) {
+            if (!input.ausgeschlosseneBuchIds().contains(buch.buchId()) && !verlauf.hatFeedback(buch.buchId(), Feedback.DISLIKE)) {
+                Kandidatenklasse klasse = bestimmeKlasse(buch, verlauf);
+                Kandidat kandidat = new Kandidat(buch, klasse);
+                if(!verlauf.wurdeKuerzlichEmpfohlen(buch.buchId(), input.naechstePosition(), mindestabstand)) {
+                    kandidaten.add(kandidat);
+                }
+                else {
+                    eventuelleKandidaten.add(kandidat);
+                }
+            }
+        }
+        if (kandidaten.size() < KARTEN_PRO_RUNDE) {
+            kandidaten.addAll(eventuelleKandidaten);
+        }
+        return kandidaten;
+    }
+
+    /** Ordnet ein Buch anhand seines Verlaufs einer Kandidatenklasse zu. */
+    private Kandidatenklasse bestimmeKlasse(BuchInfo buch, Verlauf verlauf){
+        if(!verlauf.wurdeEmpfohlen(buch.buchId())) {
+            return Kandidatenklasse.NEU;
+        }
+        else if(verlauf.hatFeedback(buch.buchId(), Feedback.LIKE)) {
+            return Kandidatenklasse.GELIKED;
+        }
+        else {
+            return Kandidatenklasse.UEBERSPRUNGEN;
+        }
+    }
+}
