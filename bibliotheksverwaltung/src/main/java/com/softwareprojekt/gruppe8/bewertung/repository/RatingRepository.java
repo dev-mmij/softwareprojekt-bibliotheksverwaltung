@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface RatingRepository extends JpaRepository<Rating, Long> {
     @Query(
-            value = "SELECT * FROM rating WHERE user_id = :userId AND buch_id = :buchId",
+            value = "SELECT * FROM bewertung WHERE benutzer_id = :userId AND buch_id = :buchId",
             nativeQuery = true
     )
     Optional<Rating> findRating(@Param("userId") Long userId, @Param("buchId") Long buchId);

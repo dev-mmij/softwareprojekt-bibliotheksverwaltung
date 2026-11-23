@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "book_comment")
+@Table(name = "buchkommentar")
 public class Comment extends AbstractEntity {
 
     public enum Status {
@@ -16,7 +16,7 @@ public class Comment extends AbstractEntity {
     }
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "benutzer_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -30,7 +30,7 @@ public class Comment extends AbstractEntity {
     @Column(nullable = false)
     private Status status = Status.VISIBLE;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "erstellt_am", nullable = false, updatable = false)
     private Instant createdAt;
 
     public Comment() {
