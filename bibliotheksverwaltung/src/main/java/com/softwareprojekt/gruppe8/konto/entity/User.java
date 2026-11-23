@@ -2,15 +2,9 @@ package com.softwareprojekt.gruppe8.konto.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softwareprojekt.gruppe8.data.AbstractEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-
+import com.softwareprojekt.gruppe8.katalog.entity.Autor;
+import jakarta.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -33,6 +27,32 @@ public class User extends AbstractEntity {
             orphanRemoval = true
     )
     private Profil profil;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_autoren",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "autor_id")
+    )
+    private Set<Autor> gefolgteAutoren = new HashSet<>();
+
+    public Set<Autor> getGefolgteAutoren() {
+        return gefolgteAutoren;
+    }
+
+    public void setGefolgteAutoren(Set<Autor> gefolgteAutoren) {
+        this.gefolgteAutoren = gefolgteAutoren;
+    }
+
+    public void autorFolgen(Autor autor) {
+        gefolgteAutoren.add(autor);
+        autor.getFollower().add(this);
+    }
+
+    public void autorNichtMehrFolgen(Autor autor) {
+        gefolgteAutoren.remove(autor);
+        autor.getFollower().remove(this);
+    }
 
     public String getUsername() {
         return username;
