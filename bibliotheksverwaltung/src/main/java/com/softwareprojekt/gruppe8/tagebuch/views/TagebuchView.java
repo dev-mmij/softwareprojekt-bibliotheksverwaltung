@@ -186,7 +186,7 @@ public class TagebuchView extends VerticalLayout {
                 bibliothekRepository
                         .findByBenutzerAndLesestatusOrderByReadlistPositionAsc(
                                 benutzer,
-                                Lesestatus.Lese_ich_gerade
+                                Lesestatus.LESE_ICH_GERADE
                         );
 
         int anzahl = 0;

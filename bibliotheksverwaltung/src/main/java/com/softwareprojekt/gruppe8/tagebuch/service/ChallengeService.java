@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class ChallengeService {
@@ -346,13 +345,13 @@ public class ChallengeService {
         for (Bibliothekseintrag eintrag : eintraege) {
 
             if (eintrag.getLesestatus()
-                    == Lesestatus.Moechte_ich_lesen) {
+                    == Lesestatus.MOECHTE_ICH_LESEN) {
 
                 geplanteBuecher++;
             }
 
             if (eintrag.getLesestatus()
-                    != Lesestatus.Gelesen) {
+                    != Lesestatus.GELESEN) {
 
                 continue;
             }
