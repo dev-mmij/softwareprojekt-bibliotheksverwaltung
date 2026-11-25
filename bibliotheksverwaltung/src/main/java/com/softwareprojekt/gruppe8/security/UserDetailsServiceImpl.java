@@ -1,8 +1,7 @@
 package com.softwareprojekt.gruppe8.security;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.security.core.GrantedAuthority;
+import com.softwareprojekt.gruppe8.data.UserRepository;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,8 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.softwareprojekt.gruppe8.konto.entity.User;
-import com.softwareprojekt.gruppe8.data.UserRepository;
+import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -23,18 +21,31 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
+
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("No user present with username: " + username));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getHashedPassword(),
-                getAuthorities(user));
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(
+                                "Kein Benutzer mit dem Benutzernamen vorhanden: " + username
+                        )
+                );
+
+        if (user.getRolle() == null) {
+            throw new UsernameNotFoundException(
+                    "Für den Benutzer ist keine Rolle hinterlegt: " + username
+            );
+        }
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getHashedPassword(),
+                List.of(
+                        new SimpleGrantedAuthority(
+                                "ROLE_" + user.getRolle().getName().name()
+                        )
+                )
+        );
     }
-
-    private static List<GrantedAuthority> getAuthorities(User user) {
-        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(Collectors.toList());
-
-    }
-
 }

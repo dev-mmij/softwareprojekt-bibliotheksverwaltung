@@ -1,5 +1,10 @@
 package com.softwareprojekt.gruppe8.konto.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "rollen")
@@ -11,18 +16,22 @@ public class Rolle {
     private Long rollenId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "Rollenname", nullable = false, unique = true, length = 20)
-    private RoleType Rollenname;
+    @Column(name = "rollenname", nullable = false, unique = true, length = 20)
+    private RoleType name;
 
     @Column(name = "beschreibung", length = 255)
     private String beschreibung;
+
+    @OneToMany(mappedBy = "rolle", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<User> user = new HashSet<>();
 
     protected Rolle() {
         // Wird von JPA benötigt
     }
 
-    public Rolle(RoleType Rollenname, String beschreibung) {
-        this.Rollenname = Rollenname;
+    public Rolle(RoleType name, String beschreibung) {
+        this.name = name;
         this.beschreibung = beschreibung;
     }
 
@@ -30,12 +39,12 @@ public class Rolle {
         return rollenId;
     }
 
-    public RoleType getRollenname() {
-        return Rollenname;
+    public RoleType getName() {
+        return name;
     }
 
-    public void setName(RoleType Rollenname) {
-        this.Rollenname = Rollenname;
+    public void setName(RoleType name) {
+        this.name = name;
     }
 
     public String getBeschreibung() {
@@ -44,5 +53,13 @@ public class Rolle {
 
     public void setBeschreibung(String beschreibung) {
         this.beschreibung = beschreibung;
+    }
+
+    public Set<User> getUser() {
+        return user;
+    }
+
+    public void setUser(Set<User> user) {
+        this.user = user;
     }
 }

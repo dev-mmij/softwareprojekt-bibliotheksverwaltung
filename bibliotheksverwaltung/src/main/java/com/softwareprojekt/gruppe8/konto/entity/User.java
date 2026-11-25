@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softwareprojekt.gruppe8.data.AbstractEntity;
 import com.softwareprojekt.gruppe8.katalog.entity.Autor;
 import jakarta.persistence.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,15 +12,19 @@ import java.util.Set;
 @Table(name = "application_user")
 public class User extends AbstractEntity {
 
+    @Column(nullable = false, unique = true)
     private String username;
-    private String EMail;
+
+    @Column(name = "email")
+    private String email;
 
     @JsonIgnore
+    @Column(nullable = false)
     private String hashedPassword;
 
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.LAZY)
-    private Set<RoleType> roles;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "rollen_id", nullable = false)
+    private Rolle rolle;
 
     @OneToOne(
             cascade = CascadeType.ALL,
@@ -35,6 +40,46 @@ public class User extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "autor_id")
     )
     private Set<Autor> gefolgteAutoren = new HashSet<>();
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
+    public Rolle getRolle() {
+        return rolle;
+    }
+
+    public void setRolle(Rolle rolle) {
+        this.rolle = rolle;
+    }
+
+    public Profil getProfil() {
+        return profil;
+    }
+
+    public void setProfil(Profil profil) {
+        this.profil = profil;
+    }
 
     public Set<Autor> getGefolgteAutoren() {
         return gefolgteAutoren;
@@ -53,44 +98,5 @@ public class User extends AbstractEntity {
         gefolgteAutoren.remove(autor);
         autor.getFollower().remove(this);
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEMail() {
-        return EMail;
-    }
-
-    public void setEMail(String EMail) {
-        this.EMail = EMail;
-    }
-
-    public String getHashedPassword() {
-        return hashedPassword;
-    }
-
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
-    }
-
-    public Set<RoleType> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<RoleType> roles) {
-        this.roles = roles;
-    }
-
-    public Profil getProfil() {
-        return profil;
-    }
-
-    public void setProfil(Profil profil) {
-        this.profil = profil;
-    }
 }
+
