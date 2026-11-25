@@ -1,7 +1,7 @@
 package com.softwareprojekt.gruppe8.bewertung.entity;
 
 import com.softwareprojekt.gruppe8.data.AbstractEntity;
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import jakarta.persistence.*;
 import java.time.Instant;
 

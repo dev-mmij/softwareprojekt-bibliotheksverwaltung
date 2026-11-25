@@ -3,8 +3,10 @@ package com.softwareprojekt.gruppe8.bibliothek.repository;
 import com.softwareprojekt.gruppe8.bibliothek.entity.Bibliothekseintrag;
 import com.softwareprojekt.gruppe8.bibliothek.entity.Lesestatus;
 import com.softwareprojekt.gruppe8.katalog.entity.Buch;
-import com.softwareprojekt.gruppe8.konto.User;
+
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.softwareprojekt.gruppe8.marktplatz.entity;
 
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import com.softwareprojekt.gruppe8.katalog.entity.Buch;
 
 import jakarta.persistence.*;
