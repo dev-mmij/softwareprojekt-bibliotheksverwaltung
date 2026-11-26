@@ -162,4 +162,102 @@ class EmpfehlungsalgorithmusTest {
 
         assertEquals(List.of(14, 17), explorationspositionen);
     }
+
+    @Test
+    void liefertKeinePositionenFuerExplorationBeiKeinenUnbekannten() {
+        AlgorithmusInput input = new AlgorithmusInput(
+                List.of(hobbit, es, hungerGames, harryPotter, wennSieWuesste, friedhofDerKuscheltiere, shining, carrie,
+                        revival, cujo, christine),
+                List.of(new VerlaufEintrag(HOBBIT_ID, 1, Feedback.LIKE),
+                        new VerlaufEintrag(ES_ID, 2, Feedback.LIKE),
+                        new VerlaufEintrag(HUNGER_GAMES_ID, 3, Feedback.LIKE),
+                        new VerlaufEintrag(HARRY_POTTER_ID, 4, Feedback.LIKE),
+                        new VerlaufEintrag(WENN_SIE_WUESSTE_ID, 5, Feedback.LIKE)),
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                11);
+
+        parameter.put(EmpfehlungsparameterDefinition.ENTDECKUNGSPLAETZE, 2.0);
+
+        int anzahlExploration = algorithmus.generiereNaechsteEmpfehlungsrunde(input, parameter)
+                .stream().filter(Vorschlag::istExploration).toList().size();
+
+        assertEquals(0, anzahlExploration);
+    }
+
+    @Test
+    void sperreKuerzlichEmpfohlene() {
+        AlgorithmusInput input = new AlgorithmusInput(
+                List.of(hobbit, es, hungerGames, harryPotter, wennSieWuesste, friedhofDerKuscheltiere, shining, carrie,
+                        revival, cujo, christine),
+                List.of(new VerlaufEintrag(HOBBIT_ID, 1, Feedback.LIKE)),
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                11);
+
+
+
+        List<Long> vorschlaege = algorithmus.generiereNaechsteEmpfehlungsrunde(input, parameter)
+                .stream().map(Vorschlag::buchId).toList();
+
+        assertFalse(vorschlaege.contains(HOBBIT_ID));
+    }
+
+    @Test
+    void sperreKuerzlichEmpfohlenerBuecherAufgehoben() {
+        AlgorithmusInput input = new AlgorithmusInput(
+                List.of(hobbit, es, hungerGames, harryPotter, wennSieWuesste, friedhofDerKuscheltiere, shining, carrie,
+                        revival, cujo),
+                List.of(new VerlaufEintrag(HOBBIT_ID, 1, Feedback.LIKE)),
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                50);
+
+
+
+        List<Long> vorschlaege = algorithmus.generiereNaechsteEmpfehlungsrunde(input, parameter)
+                .stream().map(Vorschlag::buchId).toList();
+
+        assertTrue(vorschlaege.contains(HOBBIT_ID));
+    }
+
+    @Test
+    void liefertHoechstensZehnKartenProEmpfehlungsrunde() {
+        AlgorithmusInput input = new AlgorithmusInput(
+                List.of(hobbit, es, hungerGames, harryPotter, wennSieWuesste, friedhofDerKuscheltiere, shining, carrie,
+                        revival, cujo, christine),
+                List.of(),
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                1);
+
+
+
+        List<Vorschlag> vorschlaege = algorithmus.generiereNaechsteEmpfehlungsrunde(input, parameter);
+
+        assertEquals(10, vorschlaege.size());
+    }
+
+    @Test
+    void liefertLeereEmpfehlungslisteWennAlleAusgeschlossenSind() {
+        AlgorithmusInput input = new AlgorithmusInput(
+                List.of(hobbit, es, hungerGames, harryPotter, wennSieWuesste, friedhofDerKuscheltiere, shining, carrie,
+                        revival, cujo, christine),
+                List.of(),
+                Set.of(),
+                Set.of(),
+                Set.of(HOBBIT_ID, ES_ID, HUNGER_GAMES_ID, HARRY_POTTER_ID, WENN_SIE_WUESSTE_ID, FRIEDHOF_DER_KUSCHELTIERE_ID,
+                        SHINING_ID, CARRIE_ID, REVIVAL_ID, CUJO_ID, CHRISTINE_ID),
+                1);
+
+
+
+        List<Vorschlag> vorschlaege = algorithmus.generiereNaechsteEmpfehlungsrunde(input, parameter);
+
+        assertEquals(0, vorschlaege.size());
+    }
 }
