@@ -28,15 +28,20 @@ public class Empfehlungskarte extends Div {
         H4 buchTitel = new H4(empfehlungsdaten.getBuchTitel());
         buchTitel.addClassName("buch-titel");
 
-        Paragraph autor = new Paragraph(empfehlungsdaten.getAutor());
-        autor.addClassName("buch-autor");
+        HorizontalLayout autorLeiste = new HorizontalLayout();
+        for(String autor: empfehlungsdaten.getAutoren()){
+            Span autorSpan = new Span(autor);
+            autorSpan.addClassName("buch-autor");
+            autorLeiste.add(autorSpan);
+        }
+
 
         HorizontalLayout genreLeiste = new HorizontalLayout();
         genreLeiste.addClassName("genre-leiste");
         for(String buchGenre : empfehlungsdaten.getBuchGenres()){
-            Span genre = new  Span(buchGenre);
-            genreLeiste.add(genre);
-            genre.addClassName("buch-genre");
+            Span genreSpan = new  Span(buchGenre);
+            genreLeiste.add(genreSpan);
+            genreSpan.addClassName("buch-genre");
         }
 
         Paragraph empfehlungsGrund = new Paragraph(empfehlungsdaten.getEmpfehlungsgrund());
@@ -68,7 +73,7 @@ public class Empfehlungskarte extends Div {
         HorizontalLayout passungLeiste = new HorizontalLayout(passungsAbfrage, buttonLeiste);
         passungLeiste.addClassName("passung-leiste");
 
-        VerticalLayout buchDetails = new VerticalLayout(explorationTag, buchTitel, autor, genreLeiste, empfehlungsGrund, passungLeiste);
+        VerticalLayout buchDetails = new VerticalLayout(explorationTag, buchTitel, autorLeiste, genreLeiste, empfehlungsGrund, passungLeiste);
         buchDetails.addClassName("buch-details");
 
         HorizontalLayout inhalt = new HorizontalLayout(buchCover, buchDetails);
