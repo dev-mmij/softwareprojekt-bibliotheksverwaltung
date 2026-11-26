@@ -1,7 +1,7 @@
 package com.softwareprojekt.gruppe8.bibliothek.entity;
 
 import com.softwareprojekt.gruppe8.katalog.entity.Buch;
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

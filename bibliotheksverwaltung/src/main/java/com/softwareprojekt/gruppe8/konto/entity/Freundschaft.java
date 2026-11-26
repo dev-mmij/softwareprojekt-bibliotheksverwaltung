@@ -1,4 +1,4 @@
-package com.softwareprojekt.gruppe8.konto;
+package com.softwareprojekt.gruppe8.konto.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

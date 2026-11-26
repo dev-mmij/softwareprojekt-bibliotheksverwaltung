@@ -1,7 +1,6 @@
 package com.softwareprojekt.gruppe8.common.views;
 
-import com.softwareprojekt.gruppe8.konto.User;
-import com.softwareprojekt.gruppe8.konto.Profil;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import com.softwareprojekt.gruppe8.security.AuthenticatedUser;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -68,6 +67,7 @@ public class MainLayout extends AppLayout{
         nav.addClassName("navigation");
         SideNav entdeckenNav = createSideNavGroup("Entdecken");
         SideNav lesenNav = createSideNavGroup("Lesen");
+        SideNav KontoNav = createSideNavGroup("Mein Konto");
         SideNav handelNav = createSideNavGroup("Handel");
         SideNav adminNav = createSideNavGroup("Administration");
         adminNav.addClassName("admin-navigation");
@@ -84,7 +84,11 @@ public class MainLayout extends AppLayout{
 
             if (placement >= 900){
                 adminNav.addItem(item);
-            } else if (placement >= 300){
+            }
+            else if (placement >= 500){
+                KontoNav.addItem(item);
+            }
+            else if (placement >= 300){
                 handelNav.addItem(item);
             } else if (placement >= 200){
                 lesenNav.addItem(item);
@@ -93,7 +97,7 @@ public class MainLayout extends AppLayout{
             }
         });
 
-        nav.add(entdeckenNav, lesenNav, handelNav);
+        nav.add(entdeckenNav, lesenNav, handelNav, KontoNav);
         if(!adminNav.getItems().isEmpty()){
             nav.add(adminNav);
         }

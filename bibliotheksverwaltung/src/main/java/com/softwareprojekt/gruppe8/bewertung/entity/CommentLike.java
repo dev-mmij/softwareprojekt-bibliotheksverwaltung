@@ -1,16 +1,16 @@
 package com.softwareprojekt.gruppe8.bewertung.entity;
 
 import com.softwareprojekt.gruppe8.data.AbstractEntity;
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
 @Table(
-        name = "comment_like",
+        name = "kommentar_gefaellt_mir",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_comment_like_user_comment",
-                columnNames = {"user_id", "comment_id"}
+                name = "uk_kommentar_gefaellt_mir_benutzer_kommentar",
+                columnNames = {"benutzer_id", "kommentar_id"}
         )
 )
 public class CommentLike extends AbstractEntity {

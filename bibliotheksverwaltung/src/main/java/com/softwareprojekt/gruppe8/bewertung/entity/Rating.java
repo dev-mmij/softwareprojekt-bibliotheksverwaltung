@@ -1,33 +1,33 @@
 package com.softwareprojekt.gruppe8.bewertung.entity;
 
 import com.softwareprojekt.gruppe8.data.AbstractEntity;
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import com.softwareprojekt.gruppe8.katalog.entity.Buch;
 import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
 @Table(
-        name = "rating",
+        name = "bewertung",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_rating_user_buch",
-                columnNames = {"user_id", "buch_id"}
+                name = "uk_bewertung_benutzer_buch",
+                columnNames = {"benutzer_id", "buch_id"}
         )
 )
 public class Rating extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "benutzer_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "buch_id", nullable = false)
     private Buch buch;
 
-    @Column(nullable = false)
+    @Column(name = "sterne", nullable = false)
     private int stars;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "erstellt_am", nullable = false, updatable = false)
     private Instant createdAt;
 
     public Rating() {
