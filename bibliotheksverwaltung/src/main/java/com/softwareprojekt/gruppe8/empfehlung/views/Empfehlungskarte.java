@@ -1,5 +1,6 @@
 package com.softwareprojekt.gruppe8.empfehlung.views;
 
+import com.softwareprojekt.gruppe8.empfehlung.domain.Feedback;
 import com.softwareprojekt.gruppe8.empfehlung.service.Empfehlungsdaten;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.*;
@@ -8,6 +9,8 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
+import java.util.function.Consumer;
+
 /**
  * Klasse zur Kapselung der grafischen Darstellung einer Empfehlung
  *
@@ -15,7 +18,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
  */
 
 public class Empfehlungskarte extends Div {
-    public Empfehlungskarte(Empfehlungsdaten empfehlungsdaten) {
+    private boolean daumenHochGedrueckt = false;
+    private boolean daumenRunterGedrueckt = false;
+    public Empfehlungskarte(Empfehlungsdaten empfehlungsdaten, Consumer<Feedback> beiFeedback) {
         addClassName("empfehlungskarte");
 
         Span explorationTag = new Span(new Icon(VaadinIcon.COMPASS), new Span("Mal was Neues"));
@@ -59,12 +64,27 @@ public class Empfehlungskarte extends Div {
         daumenRunter.addClassName("daumen-runter");
 
         daumenHoch.addClickListener(e -> {
-            daumenHoch.setClassName("ausgewaehlt", true);
-            daumenRunter.setClassName("ausgewaehlt", false);
+            if(daumenHochGedrueckt){
+                daumenHoch.setClassName("ausgewaehlt", false);
+                beiFeedback.accept(Feedback.NICHT_BEWERTET);
+            } else {
+                daumenHoch.setClassName("ausgewaehlt", true);
+                daumenRunter.setClassName("ausgewaehlt", false);
+                beiFeedback.accept(Feedback.LIKE);
+            }
+            daumenHochGedrueckt = !daumenHochGedrueckt;
+
         });
         daumenRunter.addClickListener(e -> {
-            daumenRunter.setClassName("ausgewaehlt", true);
-            daumenHoch.setClassName("ausgewaehlt", false);
+            if(daumenRunterGedrueckt){
+                daumenRunter.setClassName("ausgewaehlt", false);
+                beiFeedback.accept(Feedback.NICHT_BEWERTET);
+            } else {
+                daumenRunter.setClassName("ausgewaehlt", true);
+                daumenHoch.setClassName("ausgewaehlt", false);
+                beiFeedback.accept(Feedback.DISLIKE);
+            }
+            daumenRunterGedrueckt = !daumenRunterGedrueckt;
         });
 
         HorizontalLayout buttonLeiste = new HorizontalLayout(daumenHoch, daumenRunter);

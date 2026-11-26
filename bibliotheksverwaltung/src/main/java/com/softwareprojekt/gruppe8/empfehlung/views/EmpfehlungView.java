@@ -50,7 +50,8 @@ public class EmpfehlungView extends VerticalLayout {
             Div kartenbereich = new Div();
             kartenbereich.addClassName("kartenbereich");
             List<Empfehlungsdaten> empfehlungen = empfehlungService.ladeNeueEmpfehlungen(benutzer.get());
-            empfehlungen.forEach(empfehlungsdatensatz -> kartenbereich.add(new Empfehlungskarte(empfehlungsdatensatz)));
+            empfehlungen.forEach(empfehlungsdatensatz ->
+                    kartenbereich.add(new Empfehlungskarte(empfehlungsdatensatz, feedback -> empfehlungService.speichereFeedback(empfehlungsdatensatz.getEmpfehlungId(), feedback))));
 
             //Hinzufuegen aller Elemente
             add(ueberschrift, seitenBeschreibung, kartenbereich);
