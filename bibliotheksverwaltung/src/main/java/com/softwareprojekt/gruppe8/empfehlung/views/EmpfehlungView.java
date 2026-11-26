@@ -10,7 +10,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.RolesAllowed;
+import jakarta.annotation.security.PermitAll;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
 @PageTitle("Für Dich")
 @Route("fuer-dich")
 @Menu(order = 120, icon = LineAwesomeIconUrl.STAR)
-@RolesAllowed("USER")
+@PermitAll
 @StyleSheet("styles/empfehlung/empfehlung.css")
 public class EmpfehlungView extends VerticalLayout {
 
