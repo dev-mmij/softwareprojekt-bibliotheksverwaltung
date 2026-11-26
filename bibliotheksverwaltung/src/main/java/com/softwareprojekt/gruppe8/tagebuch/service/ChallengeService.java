@@ -3,7 +3,7 @@ package com.softwareprojekt.gruppe8.tagebuch.service;
 import com.softwareprojekt.gruppe8.bibliothek.entity.Bibliothekseintrag;
 import com.softwareprojekt.gruppe8.bibliothek.entity.Lesestatus;
 import com.softwareprojekt.gruppe8.bibliothek.repository.BibliothekseintragRepository;
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import com.softwareprojekt.gruppe8.tagebuch.datatransfer.ChallengeStatistik;
 import com.softwareprojekt.gruppe8.tagebuch.datatransfer.TaeglicheChallengeStatistik;
 import com.softwareprojekt.gruppe8.tagebuch.domain.ChallengeTeilnahme;

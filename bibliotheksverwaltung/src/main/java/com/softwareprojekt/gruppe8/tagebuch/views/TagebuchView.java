@@ -4,7 +4,7 @@ import com.softwareprojekt.gruppe8.common.views.MainLayout;
 
 import com.softwareprojekt.gruppe8.security.AuthenticatedUser;
 
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 
 import com.softwareprojekt.gruppe8.katalog.entity.Buch;
 

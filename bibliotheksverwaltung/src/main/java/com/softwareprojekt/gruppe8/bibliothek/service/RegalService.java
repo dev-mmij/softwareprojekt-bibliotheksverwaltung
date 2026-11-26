@@ -3,7 +3,7 @@ package com.softwareprojekt.gruppe8.bibliothek.service;
 import com.softwareprojekt.gruppe8.bibliothek.entity.Bibliothekseintrag;
 import com.softwareprojekt.gruppe8.bibliothek.entity.Regal;
 import com.softwareprojekt.gruppe8.bibliothek.repository.RegalRepository;
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

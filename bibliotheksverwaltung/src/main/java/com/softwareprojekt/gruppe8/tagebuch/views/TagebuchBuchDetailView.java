@@ -3,7 +3,7 @@ package com.softwareprojekt.gruppe8.tagebuch.views;
 import com.softwareprojekt.gruppe8.common.views.MainLayout;
 import com.softwareprojekt.gruppe8.security.AuthenticatedUser;
 
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import com.softwareprojekt.gruppe8.katalog.entity.Buch;
 
 import com.softwareprojekt.gruppe8.bibliothek.entity.Bibliothekseintrag;

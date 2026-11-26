@@ -7,7 +7,7 @@ import com.softwareprojekt.gruppe8.bibliothek.repository.BibliothekseintragRepos
 import com.softwareprojekt.gruppe8.bibliothek.repository.RegalRepository;
 import com.softwareprojekt.gruppe8.bibliothek.repository.WunschlisteneintragRepository;
 import com.softwareprojekt.gruppe8.katalog.entity.Buch;
-import com.softwareprojekt.gruppe8.konto.User;
+import com.softwareprojekt.gruppe8.konto.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
