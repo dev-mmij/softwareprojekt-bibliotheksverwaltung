@@ -98,7 +98,7 @@ class EmpfehlungsalgorithmusTest {
     }
 
     @Test
-    void sortiertBuecherAnhandIhrerKlasseKorrekt() {
+    void sortiertNachKlasseVorScore() {
         AlgorithmusInput input = new AlgorithmusInput(
                 List.of(harryPotter, es, wennSieWuesste),
                 List.of(new VerlaufEintrag(HARRY_POTTER_ID, 1, Feedback.LIKE),
@@ -129,7 +129,7 @@ class EmpfehlungsalgorithmusTest {
     }
 
     @Test
-    void zaehltDiePositionenDerVorschlaegeHoch() {
+    void vergibtPositionenAbNaechsterPosition() {
         AlgorithmusInput input = new AlgorithmusInput(
                 List.of(hobbit, es, hungerGames, harryPotter, wennSieWuesste),
                 List.of(),
@@ -145,7 +145,7 @@ class EmpfehlungsalgorithmusTest {
     }
 
     @Test
-    void berechnetKorrektExplorationspositionen() {
+    void setztExplorationaufBerechnetePlaetze() {
         AlgorithmusInput input = new AlgorithmusInput(
                 List.of(hobbit, es, hungerGames, harryPotter, wennSieWuesste, friedhofDerKuscheltiere, shining, carrie,
                         revival, cujo, christine),
@@ -164,7 +164,7 @@ class EmpfehlungsalgorithmusTest {
     }
 
     @Test
-    void liefertKeinePositionenFuerExplorationBeiKeinenUnbekannten() {
+    void fuelltExplorationspositionenNormalOhneUnbekannteBuecher() {
         AlgorithmusInput input = new AlgorithmusInput(
                 List.of(hobbit, es, hungerGames, harryPotter, wennSieWuesste, friedhofDerKuscheltiere, shining, carrie,
                         revival, cujo, christine),
@@ -187,7 +187,7 @@ class EmpfehlungsalgorithmusTest {
     }
 
     @Test
-    void sperreKuerzlichEmpfohlene() {
+    void sperreKuerzlichEmpfohleneBuecher() {
         AlgorithmusInput input = new AlgorithmusInput(
                 List.of(hobbit, es, hungerGames, harryPotter, wennSieWuesste, friedhofDerKuscheltiere, shining, carrie,
                         revival, cujo, christine),
@@ -206,7 +206,7 @@ class EmpfehlungsalgorithmusTest {
     }
 
     @Test
-    void sperreKuerzlichEmpfohlenerBuecherAufgehoben() {
+    void hebtSperreAufWennZuWenigeKandidaten() {
         AlgorithmusInput input = new AlgorithmusInput(
                 List.of(hobbit, es, hungerGames, harryPotter, wennSieWuesste, friedhofDerKuscheltiere, shining, carrie,
                         revival, cujo),
@@ -214,7 +214,7 @@ class EmpfehlungsalgorithmusTest {
                 Set.of(),
                 Set.of(),
                 Set.of(),
-                50);
+                11);
 
 
 
@@ -243,7 +243,7 @@ class EmpfehlungsalgorithmusTest {
     }
 
     @Test
-    void liefertLeereEmpfehlungslisteWennAlleAusgeschlossenSind() {
+    void liefertLeereRundeWennAlleAusgeschlossen() {
         AlgorithmusInput input = new AlgorithmusInput(
                 List.of(hobbit, es, hungerGames, harryPotter, wennSieWuesste, friedhofDerKuscheltiere, shining, carrie,
                         revival, cujo, christine),
