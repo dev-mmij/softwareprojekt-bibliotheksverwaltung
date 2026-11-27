@@ -1,6 +1,7 @@
 package com.softwareprojekt.gruppe8.konto.views;
 
 import com.softwareprojekt.gruppe8.common.views.MainLayout;
+import com.softwareprojekt.gruppe8.konto.service.RegistrierungService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
@@ -25,11 +26,15 @@ public class RegistrierenView extends VerticalLayout {
     private static final String SEKUNDAER = "#82766f";
     private static final String RAHMEN = "#eadbd0";
 
+    private final RegistrierungService registrierungService;
+
     private final EmailField emailField = new EmailField();
     private final PasswordField passwordField = new PasswordField();
     private final PasswordField repeatPasswordField = new PasswordField();
 
-    public RegistrierenView() {
+    public RegistrierenView(RegistrierungService registrierungService) {
+        this.registrierungService = registrierungService;
+
         setSizeFull();
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
@@ -43,8 +48,8 @@ public class RegistrierenView extends VerticalLayout {
         Div card = new Div();
         card.getStyle()
                 .set("box-sizing", "border-box")
-                .set("width", "min(100%, 700px)")
-                .set("padding", "28px 40px")
+                .set("width", "min(100%, 600px)")
+                .set("padding", "28px 36px")
                 .set("background", "#fffdf9")
                 .set("border", "1px solid " + RAHMEN)
                 .set("border-radius", "12px")
@@ -71,12 +76,8 @@ public class RegistrierenView extends VerticalLayout {
                 .set("margin", "0 0 20px");
 
         configureEmailField();
-        configurePasswordField(passwordField, "Passwort", "Passwort eingeben");
-        configurePasswordField(
-                repeatPasswordField,
-                "Passwort wiederholen",
-                "Passwort wiederholen"
-        );
+        configurePasswordField(passwordField, "Passwort eingeben");
+        configurePasswordField(repeatPasswordField, "Passwort wiederholen");
 
         Button registerButton = new Button("Registrieren", event -> register());
         registerButton.setWidthFull();
@@ -136,11 +137,7 @@ public class RegistrierenView extends VerticalLayout {
         styleField(emailField);
     }
 
-    private void configurePasswordField(
-            PasswordField field,
-            String label,
-            String placeholder
-    ) {
+    private void configurePasswordField(PasswordField field, String placeholder) {
         field.setPlaceholder(placeholder);
         field.setWidthFull();
         field.setRevealButtonVisible(false);
@@ -167,8 +164,7 @@ public class RegistrierenView extends VerticalLayout {
         block.setWidthFull();
         block.getStyle().set("margin-bottom", "14px");
 
-        Span label = createFieldLabel(labelText);
-        block.add(label, field);
+        block.add(createFieldLabel(labelText), field);
         return block;
     }
 
@@ -178,8 +174,6 @@ public class RegistrierenView extends VerticalLayout {
         block.setSpacing(false);
         block.setWidthFull();
         block.getStyle().set("margin-bottom", "14px");
-
-        Span label = createFieldLabel(labelText);
 
         Button revealButton = new Button("Passwort anzeigen");
         revealButton.getStyle()
@@ -193,11 +187,8 @@ public class RegistrierenView extends VerticalLayout {
             boolean hidden = "password".equals(
                     field.getElement().getProperty("type", "password")
             );
-
             field.getElement().setProperty("type", hidden ? "text" : "password");
-            revealButton.setText(
-                    hidden ? "Passwort verbergen" : "Passwort anzeigen"
-            );
+            revealButton.setText(hidden ? "Passwort verbergen" : "Passwort anzeigen");
         });
 
         HorizontalLayout inputRow = new HorizontalLayout(field, revealButton);
@@ -207,7 +198,7 @@ public class RegistrierenView extends VerticalLayout {
         inputRow.setFlexGrow(1, field);
         inputRow.getStyle().set("min-width", "0");
 
-        block.add(label, inputRow);
+        block.add(createFieldLabel(labelText), inputRow);
         return block;
     }
 
@@ -238,7 +229,17 @@ public class RegistrierenView extends VerticalLayout {
             return;
         }
 
-        // Hier die Registrierung mit dem vorhandenen Service/Backend verbinden.
-        Notification.show("Die Registrierung ist noch nicht mit dem Backend verbunden.");
+        try {
+            registrierungService.registrieren(
+                    emailField.getValue(),
+                    passwordField.getValue()
+            );
+            Notification.show("Konto erfolgreich erstellt. Du kannst dich jetzt anmelden.");
+            getUI().ifPresent(ui -> ui.navigate("login"));
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            Notification.show(e.getMessage());
+        } catch (RuntimeException e) {
+            Notification.show("Die Registrierung ist fehlgeschlagen. Bitte versuche es erneut.");
+        }
     }
 }
