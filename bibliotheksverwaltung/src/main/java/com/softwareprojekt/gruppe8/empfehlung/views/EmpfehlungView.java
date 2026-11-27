@@ -4,6 +4,7 @@ import com.softwareprojekt.gruppe8.empfehlung.service.EmpfehlungService;
 import com.softwareprojekt.gruppe8.empfehlung.service.Empfehlungsdaten;
 import com.softwareprojekt.gruppe8.konto.entity.User;
 import com.softwareprojekt.gruppe8.security.AuthenticatedUser;
+import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -32,10 +33,12 @@ import java.util.Optional;
 public class EmpfehlungView extends VerticalLayout {
 
     private final EmpfehlungService empfehlungService;
+    private final Optional<User> benutzer;
+    private Div kartenbereich;
 
     public EmpfehlungView(EmpfehlungService empfehlungService, AuthenticatedUser authenticatedUser) {
         this.empfehlungService = empfehlungService;
-        Optional<User> benutzer = authenticatedUser.get();
+        benutzer = authenticatedUser.get();
         setSizeFull();
         addClassName("empfehlung-view");
 
@@ -47,17 +50,44 @@ public class EmpfehlungView extends VerticalLayout {
             seitenBeschreibung.addClassName("seiten-beschreibung");
 
             //Karten
-            Div kartenbereich = new Div();
+            kartenbereich = new Div();
             kartenbereich.addClassName("kartenbereich");
-            List<Empfehlungsdaten> empfehlungen = empfehlungService.ladeNeueEmpfehlungen(benutzer.get());
-            empfehlungen.forEach(empfehlungsdatensatz ->
-                    kartenbereich.add(new Empfehlungskarte(empfehlungsdatensatz, feedback -> empfehlungService.speichereFeedback(empfehlungsdatensatz.getEmpfehlungId(), feedback))));
 
             //Hinzufuegen aller Elemente
             add(ueberschrift, seitenBeschreibung, kartenbereich);
             setFlexGrow(1, kartenbereich);
+            ladeNaechsteRunde();
         } else {
             add(new Paragraph("Bitte melde dich an, um Empfehlungen zu sehen."));
         }
+    }
+
+    @ClientCallable
+    private void ladeNaechsteRunde() {
+        List<Empfehlungsdaten> empfehlungen = empfehlungService.ladeNeueEmpfehlungen(benutzer.get());
+        if(!empfehlungen.isEmpty()) {
+            for(int i = 0; i< empfehlungen.size(); i++){
+                Empfehlungsdaten aktuelleEmpfehlung =  empfehlungen.get(i);
+                Empfehlungskarte karte = new Empfehlungskarte(aktuelleEmpfehlung, feedback ->  empfehlungService.speichereFeedback(aktuelleEmpfehlung.getEmpfehlungId(), feedback));
+                if(i == Math.max(0, empfehlungen.size()-3)) { //Neuladen der naechsten Empfehlungen ab dieser Karte
+                    beobachte(karte);
+                }
+                kartenbereich.add(karte);
+            }
+        } else {
+            kartenbereich.add(new Paragraph("Keine weiteren Empfehlungen verfügbar."));
+        }
+    }
+
+
+    private void beobachte(Empfehlungskarte karte){
+        String javaScriptMethode = "const view = $0;" //Speichern der als Parameter uebergebenen EmpfehlungView (festgelegeter Name)
+                                    + "new IntersectionObserver((eintraege, beobachter) => {"
+                                    + "if (eintraege[0].isIntersecting) {"
+                                    + "beobachter.disconnect();"    //Deaktivieren des Observers, damit nicht jede Karte eine neue Empfehlungsrunde generiert
+                                    + "view.$server.ladeNaechsteRunde();"
+                                    + "}"
+                                    + "}).observe(this);";
+        karte.getElement().executeJs(javaScriptMethode, getElement());
     }
 }
