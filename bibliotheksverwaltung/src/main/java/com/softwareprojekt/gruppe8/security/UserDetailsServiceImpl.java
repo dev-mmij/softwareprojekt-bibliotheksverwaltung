@@ -1,6 +1,6 @@
 package com.softwareprojekt.gruppe8.security;
 
-import com.softwareprojekt.gruppe8.data.UserRepository;
+import com.softwareprojekt.gruppe8.konto.repository.UserRepository;
 import com.softwareprojekt.gruppe8.konto.entity.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

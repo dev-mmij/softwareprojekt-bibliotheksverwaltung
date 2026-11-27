@@ -1,4 +1,4 @@
-package com.softwareprojekt.gruppe8.data;
+package com.softwareprojekt.gruppe8.konto.repository;
 
 import java.util.Optional;
 
