@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.softwareprojekt.gruppe8.konto.entity.User;
-import com.softwareprojekt.gruppe8.data.UserRepository;
+import com.softwareprojekt.gruppe8.konto.repository.UserRepository;
 
 @Service
 public class UserService {
