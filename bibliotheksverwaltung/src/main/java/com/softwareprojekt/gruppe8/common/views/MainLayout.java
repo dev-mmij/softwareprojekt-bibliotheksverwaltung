@@ -147,7 +147,10 @@ public class MainLayout extends AppLayout{
             layout.add(userMenu);
         } else {
             Anchor loginLink = new Anchor("login", "Anmelden");
-            layout.add(loginLink);
+            Anchor registerLink = new Anchor("registrieren", "Registrieren");
+            layout.add(loginLink, registerLink);
+            layout.getStyle().set("display", "flex");
+            layout.getStyle().set("gap", "0.5rem");
         }
         layout.addClassName("benutzer-menue");
         return layout;
