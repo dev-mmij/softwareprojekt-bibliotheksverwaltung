@@ -140,7 +140,7 @@ public class RegistrierenView extends VerticalLayout {
     private void configurePasswordField(PasswordField field, String placeholder) {
         field.setPlaceholder(placeholder);
         field.setWidthFull();
-        field.setRevealButtonVisible(false);
+        field.setRevealButtonVisible(true);
         field.getElement().setAttribute("autocomplete", "new-password");
         styleField(field);
     }
@@ -175,30 +175,7 @@ public class RegistrierenView extends VerticalLayout {
         block.setWidthFull();
         block.getStyle().set("margin-bottom", "14px");
 
-        Button revealButton = new Button("Passwort anzeigen");
-        revealButton.getStyle()
-                .set("flex-shrink", "0")
-                .set("padding", "0")
-                .set("background", "transparent")
-                .set("color", BURGUNDER)
-                .set("font-size", "12px");
-
-        revealButton.addClickListener(event -> {
-            boolean hidden = "password".equals(
-                    field.getElement().getProperty("type", "password")
-            );
-            field.getElement().setProperty("type", hidden ? "text" : "password");
-            revealButton.setText(hidden ? "Passwort verbergen" : "Passwort anzeigen");
-        });
-
-        HorizontalLayout inputRow = new HorizontalLayout(field, revealButton);
-        inputRow.setWidthFull();
-        inputRow.setAlignItems(Alignment.CENTER);
-        inputRow.setSpacing(true);
-        inputRow.setFlexGrow(1, field);
-        inputRow.getStyle().set("min-width", "0");
-
-        block.add(createFieldLabel(labelText), inputRow);
+        block.add(createFieldLabel(labelText), field);
         return block;
     }
 
@@ -234,12 +211,17 @@ public class RegistrierenView extends VerticalLayout {
                     emailField.getValue(),
                     passwordField.getValue()
             );
-            Notification.show("Konto erfolgreich erstellt. Du kannst dich jetzt anmelden.");
+
+            Notification.show(
+                    "Konto erfolgreich erstellt. Du kannst dich jetzt anmelden."
+            );
             getUI().ifPresent(ui -> ui.navigate("login"));
         } catch (IllegalArgumentException | IllegalStateException e) {
             Notification.show(e.getMessage());
         } catch (RuntimeException e) {
-            Notification.show("Die Registrierung ist fehlgeschlagen. Bitte versuche es erneut.");
+            Notification.show(
+                    "Die Registrierung ist fehlgeschlagen. Bitte versuche es erneut."
+            );
         }
     }
 }
