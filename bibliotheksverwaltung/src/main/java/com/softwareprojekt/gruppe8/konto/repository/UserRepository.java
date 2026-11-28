@@ -12,4 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     // Profil gleich mitladen, sonst LazyInitializationException im MainLayout
     @EntityGraph(attributePaths = "profil")
     Optional<User> findByUsername(String username);
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
 }
